@@ -1,0 +1,391 @@
+<!-- Plane wave scattering from soft target MM 29.7.2025 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js">
+</script>
+<style> 
+textarea {font-size: 16px;}
+optgroup {font-size: 16px;}
+</style>
+<h2>Plane wave scattering from soft target MM 29.7.2025</h2>
+
+<label for="def">Choose an object definition: </label>
+<select id="def" onchange="select()">
+<optgroup>
+  <option value="[sphere(0.01905), [0, 0, 0]]">Low resoltion sphere</option>
+  <option value="[sphere(0.01905,3), [0, 0, 0]]">Medium resolution sphere</option>
+  <option value="[ellipsoid(0.01905,0.01,0.01), [0, 0, 0]]">Prolate spheroid</option>
+  <option value="[ellipsoid(0.01905,0.01,0.005), [0, 0, 0]]">Ellipsoid</option>
+  <option value="[sphere(0.005), [-0.01, 0, 0]],|[sphere(0.005), [0.01, 0, 0]]">Two spheres</option>
+</optgroup>
+</select>
+<br>
+<textarea id="obj" style="width:480;height:440" onchange="change(this.value)">[sphere(0.01905), [0, 0, 0]]</textarea>
+
+<svg xmlns="http://www.w3.org/2000/svg" id="svg" width="440" height="440" font-family="Times" font-size=14 style="background:#eee;"">
+<g id="svg0" transform="translate(20,20)">
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(30 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(60 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(90 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(120 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(150 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(180 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(210 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(240 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(270 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(300 200 200)" stroke-dasharray="1,1"/>
+<line x1="210" y1="200" x2="400" y2="200" stroke="gray" transform ="rotate(330 200 200)" stroke-dasharray="1,1"/>
+<circle cx="200" cy="200" r="10" stroke="black" fill="none"/>	
+<circle cx="200" cy="200" r="57.5" stroke="gray" fill="none" stroke-dasharray="1,1"/>	
+<circle cx="200" cy="200" r="105" stroke="gray" fill="none" stroke-dasharray="1,1"/>	
+<circle cx="200" cy="200" r="152.5" stroke="gray" fill="none" stroke-dasharray="1,1"/>	
+<circle cx="200" cy="200" r="200" stroke="black" fill="none"/>
+<text x="205" y="215">-60</text>
+<text x="245" y="215">-50</text>
+<text x="295" y="215">-40</text>
+<text x="342" y="215">-30</text>
+<text x="380" y="215">-20</text>
+<text x="405" y="205">0</text>
+<g transform="rotate(-30,200,200)"><text x="405" y="205">30</text></g>
+<g transform="rotate(-60,200,200)"><text x="405" y="205">60</text></g>
+<text x="195" y="-5">90</text>
+<g transform="rotate(60,200,200)"><text x="-30" y="205">120</text></g>
+<g transform="rotate(30,200,200)"><text x="-30" y="205">150</text></g>
+<text x="-20" y="205">180</text>
+<g transform="rotate(-30,200,200)"><text x="-30" y="205">210</text></g>
+<g transform="rotate(-60,200,200)"><text x="-30" y="205">240</text></g>
+<text x="190" y="415">270</text>
+<g transform="rotate( 60,200,200)"><text x="405" y="205">300</text></g>
+<g transform="rotate( 30,200,200)"><text x="405" y="205">330</text></g>
+
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(0 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(30 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(60 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(90 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(120 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(150 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(180 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(210 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(240 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(270 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(300 200 200)" />
+<line x1="390" y1="200" x2="400" y2="200" stroke="black" transform ="rotate(330 200 200)" />
+
+<line x1="257.5" y1="195" x2="257.5" y2="200" stroke="black" />
+<line x1="305" y1="195" x2="305" y2="200" stroke="black" />
+<line x1="352.5" y1="195" x2="352.5" y2="200" stroke="black" />
+</g>
+</svg>
+
+<textarea id="msh" style="width:480;height:440">
+</textarea>
+<textarea id="txt" style="width:440;height:440" ondrop="drop(event);" onchange="plot();" onpaste="setTimeout(plot,0);">
+</textarea>
+
+<script>
+
+function select() {
+    var d = document.getElementById("def").value.replaceAll('|','\n');
+	document.getElementById("obj").value=d;
+	change();
+}
+	 
+function drop(e) {
+    e.preventDefault();
+    var file = e.dataTransfer.files[0];
+    var reader = new FileReader();
+      reader.onload = function(e) {
+      document.getElementById("txt").value = e.target.result;
+      plot();
+    };
+    reader.readAsText(file, "UTF-8");
+}
+
+function plot() {
+	s = document.getElementById("txt").value;
+	var ss=s.split('\n');
+	var x=[],y=[];
+	for(var i=0;i<ss.length;i++) {
+		s2=ss[i].trim().split(/\s+/);
+		if(s2[0][0]!='#' && s2.length>=2) {
+			x.push(parseFloat(s2[0])); /* column 1: degrees */
+			y.push(parseFloat(s2[1])); /* column 2: absolute values */
+		}
+	}
+	svg_polar(document.getElementById("svg0"),x,y);  //,[0,0,0],[0.1,0.01,0.001]); // test
+}
+
+function svg_polar(id,x,y,c) {
+	const tmin=-60,tmax=-20,off=10/200;
+	const W=document.getElementById("svg").getAttribute("width")-40;
+	const H=document.getElementById("svg").getAttribute("height")-40;
+	for(var i=0;i<1000;i++) {
+		svg_createpoint(id,"P"+i,-100,-100);	 // outside	
+	}
+	for(var i=0;i<x.length;i++) {
+		var t = 20*Math.log10(Math.abs(y[i]));
+		if(t>=-60) {
+			var ro=off+(1-off)*(t-tmin)/(tmax-tmin);
+			var xx=0.5+ro*Math.cos(x[i]*Math.PI/180)/2;
+			var yy=0.5+ro*Math.sin(x[i]*Math.PI/180)/2;
+			svg_createpoint(id,"P"+i,xx*W,(1-yy)*H,c||"red",2,c||"red","("+i+","+t.toFixed(2)+")");
+		}
+	}
+}
+
+/* svg drawing functions */	
+function svg_createpoint(svg,id,x,y,color,r,color2,title) { // building svg circle with coords in a string s
+	var el=document.getElementById(id);
+	if (!el) {
+		el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+		el.setAttribute('id',id);
+		svg.appendChild(el);
+	}
+	el.setAttribute('fill',color);
+	el.setAttribute('stroke-width',1);
+	el.setAttribute('stroke',color2||'none');
+	el.setAttribute("r",r||6);
+	el.setAttribute("cx",x);
+	el.setAttribute("cy",y);
+	el.innerHTML = "<title>"+(title || '')+"</title>";
+}
+
+function svg_createline(svg,id,x1,y1,x2,y2,color,w) { // building svg rect with coords in a string s for histogram bar
+	var el=document.getElementById(id);
+	if (!el) {
+		el = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+		el.setAttribute('id',id);
+		svg.appendChild(el);
+	}
+	el.setAttribute('stroke',color);
+	el.setAttribute('stroke-width',w||1);
+	el.setAttribute("x1",x1);
+	el.setAttribute("y1",y1);
+	el.setAttribute("x2",x2);
+	el.setAttribute("y2",y2);
+}
+</script>
+
+<script>
+function norm(v) {
+    let l = Math.sqrt(v[0]**2 + v[1]**2 + v[2]**2);
+    if (l === 0) l = 1;
+    return [v[0]/l, v[1]/l, v[2]/l];
+}
+
+function normal(v1, v2, v3) {
+    let a = [v2[0]-v1[0], v2[1]-v1[1], v2[2]-v1[2]];
+    let b = [v3[0]-v1[0], v3[1]-v1[1], v3[2]-v1[2]];
+    return norm([
+        a[1]*b[2] - a[2]*b[1],
+        a[2]*b[0] - a[0]*b[2],
+        a[0]*b[1] - a[1]*b[0]
+    ]);
+}
+
+function sphere(R = 1, N = 2) {
+    let vx = [[0,0,R],[0,0,-R],[-R,0,0],[0,-R,0],[R,0,0],[0,R,0]];
+    let fx = [[0,3,4],[0,4,5],[0,5,2],[0,2,3],[1,4,3],[1,5,4],[1,2,5],[1,3,2]];
+    let nv = vx.length;
+    let nt = fx.length;
+
+    for (let it = 0; it < N; it++) {
+        let ntold = nt;
+        for (let i = 0; i < ntold; i++) {
+            let [i1,i2,i3] = fx[i];
+            let a = norm([
+                (vx[i1][0] + vx[i2][0])/2,
+                (vx[i1][1] + vx[i2][1])/2,
+                (vx[i1][2] + vx[i2][2])/2
+            ]);
+            let b = norm([
+                (vx[i2][0] + vx[i3][0])/2,
+                (vx[i2][1] + vx[i3][1])/2,
+                (vx[i2][2] + vx[i3][2])/2
+            ]);
+            let c = norm([
+                (vx[i3][0] + vx[i1][0])/2,
+                (vx[i3][1] + vx[i1][1])/2,
+                (vx[i3][2] + vx[i1][2])/2
+            ]);
+
+            vx.push([R*a[0], R*a[1], R*a[2]]);
+            vx.push([R*b[0], R*b[1], R*b[2]]);
+            vx.push([R*c[0], R*c[1], R*c[2]]);
+
+            fx.push([i1, nv, nv+2]);
+            fx.push([nv, i2, nv+1]);
+            fx.push([nv+1, i3, nv+2]);
+            fx[i] = [nv, nv+1, nv+2];
+
+            nv += 3;
+            nt += 3;
+        }
+    }
+    return [vx, fx];
+}
+
+function ellipsoid(rx, ry, rz, N = 2) {
+      const vx = [];
+      
+      const t = (1 + Math.sqrt(5)) / 2;
+      const rawVerts = [
+        [-1,  t,  0], [ 1,  t,  0], [-1, -t,  0], [ 1, -t,  0],
+        [ 0, -1,  t], [ 0,  1,  t], [ 0, -1, -t], [ 0,  1, -t],
+        [ t,  0, -1], [ t,  0,  1], [-t,  0, -1], [-t,  0,  1],
+      ];
+
+      const rawFaces = [
+        [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7,10], [0,10,11],
+        [1, 5, 9], [5,11,4], [11,10,2], [10,7,6], [7,1,8],
+        [3,9,4], [3,4,2], [3,2,6], [3,6,8], [3,8,9],
+        [4,9,5], [2,4,11], [6,2,10], [8,6,7], [9,8,1],
+      ];
+
+      function project([x, y, z]) {
+        const length = Math.sqrt(x*x + y*y + z*z);
+        return [rx * x / length, ry * y / length, rz * z / length];
+      }
+
+      const midpointCache = {};
+      function getMidpoint(a, b) {
+        const key = a < b ? `${a}_${b}` : `${b}_${a}`;
+        if (midpointCache[key] !== undefined) return midpointCache[key];
+
+        const v1 = vx[a];
+        const v2 = vx[b];
+        const mid = project([
+          (v1[0] + v2[0]) / 2,
+          (v1[1] + v2[1]) / 2,
+          (v1[2] + v2[2]) / 2,
+        ]);
+        vx.push(mid);
+        const index = vx.length - 1;
+        midpointCache[key] = index;
+        return index;
+      }
+
+      rawVerts.forEach(v => vx.push(project(v)));
+      let fx = rawFaces.map(f => [...f]);
+
+      for (let s = 0; s < N; s++) {
+        const newFaces = [];
+        for (const [a, b, c] of fx) {
+          const ab = getMidpoint(a, b);
+          const bc = getMidpoint(b, c);
+          const ca = getMidpoint(c, a);
+
+          newFaces.push([a, ab, ca]);
+          newFaces.push([b, bc, ab]);
+          newFaces.push([c, ca, bc]);
+          newFaces.push([ab, bc, ca]);
+        }
+        fx = newFaces;
+      }
+
+      return [vx, fx];
+}
+
+// Mesh generation logic
+let Nn = 0, Ne = 0;
+let Sn = "", Se = "";
+
+function msh_str(O) {
+    let [vx, fx] = O[0];
+    let [xo, yo, zo] = O.length > 1 ? O[1] : [0, 0, 0];
+
+    for (let i = 0; i < vx.length; i++) {
+        Sn += `${i + Nn + 1} ${(xo + vx[i][0]).toFixed(6)} ${(yo + vx[i][1]).toFixed(6)} ${(zo + vx[i][2]).toFixed(6)}\n`;
+    }
+    for (let i = 0; i < fx.length; i++) {
+        Se += `${i + Ne + 1} 2 2 0 1 ${fx[i][0] + Nn + 1} ${fx[i][1] + Nn + 1} ${fx[i][2] + Nn + 1}\n`;
+    }
+    Nn += vx.length;
+    Ne += fx.length;
+}
+
+function msh_flush() {
+    let s = `$Nodes\n${Nn}\n${Sn}$EndNodes\n$Elements\n${Ne}\n${Se}$EndElements\n`;
+    Nn = 0; Ne = 0; Sn = ""; Se = "";
+    return `$MeshFormat\n2.2 0 8\n$EndMeshFormat\n` + s;
+}
+
+function change() {
+    O = eval('['+document.getElementById("obj").value+']');
+    O.forEach(o => msh_str(o));
+    document.getElementById("msh").value=msh_flush().replaceAll('\n','\n');
+    document.getElementById("txt").value="Calculating ...";
+    setTimeout(bem,100);
+}
+</script>
+
+<script> 
+// Plane wave scattering from soft target in salt water
+//const fs = require('fs');
+//const math = require('mathjs');
+
+// Input parameters
+// const fname = 'sphere-1.905-600.msh';
+const f0 = 38e3, c0 = 1480;
+const pi = Math.PI;
+const k = 2 * pi * f0 / c0;
+const d = [1, 0, 0];
+
+function bem() {
+	var lines = document.getElementById("msh").value.split('\n');
+
+	const n = parseInt(lines[4]);
+	const v = lines.slice(5, 5 + n).map(line =>
+	  line.trim().split(/\s+/).slice(1, 4).map(parseFloat)
+	);
+	const m = parseInt(lines[n + 7]);
+	const e = lines.slice(n + 8, n + 8 + m).map(line =>
+	  line.trim().split(/\s+/).slice(5, 8).map(x => parseInt(x) - 1)  // adjust for 0-based indexing
+	);
+
+	// Triangle centers
+	const x = e.map(tri => {
+	  const sum = tri.reduce((acc, idx) => {
+	    return math.add(acc, math.divide(v[idx], 3));
+	  }, [0, 0, 0]);
+	  return sum;
+	});
+
+	// Helmholtz single layer matrix
+	//let S = math.zeros([m, m]).map(() => math.complex(0));
+	var S = math.matrix().resize([m, m]);
+	for (let i = 0; i < m; i++) {
+	  for (let j = 0; j < m; j++) {
+	    const r = math.norm(math.subtract(x[i], x[j]));
+	    S._data[i][j] = (r!==0) ? math.divide(math.exp(math.complex(0, k*r)),r*(4*pi))
+	                            : math.multiply(math.complex(0, k), 1/(4*pi) );
+	  }
+	}
+
+	// Incident field
+	const f = x.map(p => math.exp( math.complex(0, k * math.dot(p,d))));
+
+	// Surface solution using LU decomposition
+	const phi = math.lusolve(S, f.map(val => math.multiply(-1, val)));
+
+	// Far field solution
+	const r1 = Array.from({length: 360}, (_, i) => [
+	  Math.cos(i*pi/180), Math.sin(i*pi/180), 0]);
+
+	const Sff = r1.map(rvec => x.map(xj =>
+	  math.divide(math.exp( math.complex(0, -k * math.dot(xj,rvec))), 4*pi)));
+
+	const psc = Sff.map(row => math.multiply(row, phi));
+
+	// Print results
+	var s='';
+	psc.forEach((val, i) => {
+	  //console.log(`${i}\t${math.abs(val)}`);
+	  s += `${i}\t${math.abs(val._data[0]).toFixed(6)}\n`;
+	});
+	document.getElementById("txt").value=s;
+	plot();
+}
+
+change();
+
+</script>

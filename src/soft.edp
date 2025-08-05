@@ -1,0 +1,49 @@
+// Scattering from soft sphere in water (SL * p = -pinc)
+// MM 12.4.2025  freefem++-mpi -wg soft.edp
+load "bem"
+load "msh3"
+load "medit"
+load "gmsh"
+include "getARGV.idp"
+
+//string fname = getARGV("-fm","msh/simplify10_YFT_swimbladder_origin.msh");
+string fname = getARGV("-fm","msh/sphere-1.905-600.msh");
+real th = getARGV("-th",0);
+real f = getARGV("-f0",38e3);
+real c0 = getARGV("-c0",1480);
+
+real w = 2*pi*f, k = w/c0;
+
+// --- target
+meshS ThS = gmshloadS(fname);
+ThS = OrientNormal(ThS,unbounded=1);
+
+//func pinc = exp(1i*k*(x*0+y*(-1)+z*0));   // incident plane wave
+func pinc = exp(1i*k*(x*cos(th*pi/180)+y*sin(th*pi/180)+z*0));   // incident plane wave
+
+// --- surface solution 
+fespace Uh(ThS,P1);
+varf vlhs(u,v) = int2dx2d(ThS)(ThS)(BEM(BemKernel("SL",k=k),u,v));
+varf vrhs(u,v) = -int2d(ThS)(pinc*v);
+HMatrix<complex> A = vlhs(Uh,Uh);
+Uh<complex> b;   b[] = vrhs(0,Uh);
+Uh<complex> u;   u[] = A^-1 * b[]; 
+Uh               pabs = abs(u);
+medit("th",ThS,pabs);
+
+// --- far field pattern
+varf vpSL(u,v) = int2d(ThS)(POT(BemPotential("SL",k=k),u,v));
+border c1(t=0,1) {x=cos(2*pi*t); y=sin(2*pi*t); z=0;}; int nc=360;
+meshL ThL = buildmeshL(c1(nc));
+fespace UhL(ThL,P1);
+HMatrix<complex>  SL2 = vpSL(Uh,UhL);
+UhL<complex> psc; psc[] = SL2 * u[];
+UhL               pscabs = abs(psc);
+
+// ------ output
+//string oname="out/soft-edp.txt";
+{//ofstream fout(oname);
+ for(int i=0;i<pscabs.n;i++) {cout << i << " " << pscabs[][i] << endl;}
+}
+//exec("gnuplot -p -c bin/polar.gp "+ oname);
+
