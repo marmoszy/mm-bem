@@ -46,32 +46,32 @@ License: LGPL 3+ (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 gnuplot --version
 gnuplot 6.0 patchlevel 2
 
-gcc src/soft.c -O3 -o bin/soft
+gcc src/soft.c -O3 -ffast-math -o bin/soft
 time ./bin/soft msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-c.txt
 
-real	0m0.921s
-user	0m0.746s
-sys	0m0.007s
+real	0m0.658s
+user	0m0.498s
+sys	0m0.005s
 time julia src/soft.jl msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-jl.txt
 
-real	0m1.445s
-user	0m2.797s
-sys	0m1.414s
+real	0m1.881s
+user	0m2.933s
+sys	0m1.405s
 time python3 src/soft.py msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-py.txt
 
-real	0m4.584s
-user	0m4.419s
-sys	0m0.067s
+real	0m4.663s
+user	0m4.461s
+sys	0m0.078s
 time freefem++-mpi -v 0 -f src/soft.edp > out/sphere-1.905-0-38-1480-edp.txt
 
-real	0m6.425s
-user	0m6.371s
-sys	0m0.043s
+real	0m6.452s
+user	0m6.379s
+sys	0m0.044s
 time gnuplot -c src/soft.gp > out/sphere-1.905-0-38-1480-gp.txt
 
-real	0m0.054s
-user	0m0.043s
-sys	0m0.005s
+real	0m0.061s
+user	0m0.044s
+sys	0m0.007s
 
 cd out
 gnuplot -p -c ../bin/polar.gp sphere-1.905-0-38-1480*.txt
@@ -80,10 +80,11 @@ mv polar.svg ../figs/sphere-1.905-0-38-1480.svg
 mv polar.pdf ../figs/sphere-1.905-0-38-1480.pdf
 
 gnuplot -p -c ../bin/polar.gp YFT*.txt
-qt.qpa.fonts: Populating font family aliases took 57 ms. Replace uses of missing font family "Sans" with one that exists to avoid this cost. 
+qt.qpa.fonts: Populating font family aliases took 58 ms. Replace uses of missing font family "Sans" with one that exists to avoid this cost. 
 mv polar.svg ../figs/YFT-0-38-1480.svg
 mv polar.pdf ../figs/YFT-0-38-1480.pdf
 cd ..
+bash-3.2$ 
 ```
 
 ### Results

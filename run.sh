@@ -6,7 +6,7 @@ python3 --version
 freefem++-mpi
 gnuplot --version
 
-gcc src/soft.c -O3 -o bin/soft
+gcc src/soft.c -O3 -ffast-math -o bin/soft
 time ./bin/soft msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-c.txt
 time julia src/soft.jl msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-jl.txt
 time python3 src/soft.py msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-py.txt
