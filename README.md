@@ -19,7 +19,7 @@ This output data could be redirected to txt file or piped to plotting software. 
 
 The source codes are in C, Python, Matlab, Julia and FreeFem. The theoretical calculations for a soft sphere are in Gnuplot. The example results are for 38kHz. The usege of source codes requires installating its evironments or comilers. Only FreeFem version uses Hmatrix approach that allows for faster calculations for large meshes. 
 
-The package contains also the demonstration page that do not need any addition installation. The page allows generating sphere, spheroid or ellipsoid meshes and calculate scattering pattern for them. Moreover, it can present the results in polar form of calculated data along with other data file that could be added for comparison.
+The package contains also the demonstration page that do not need any addition installation. The page allows generating sphere, spheroid or ellipsoid meshes and calculating scattering pattern for them. Moreover, it can present the results in polar form of calculated data along with other data file that could be added for comparison. This version can work rather with only medium size meshes!
 
 ### Shell script
 
@@ -46,32 +46,32 @@ License: LGPL 3+ (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 gnuplot --version
 gnuplot 6.0 patchlevel 2
 
-gcc src/soft.c -O3 -o bin/soft
+gcc src/soft.c -O3 -ffast-math -o bin/soft
 time ./bin/soft msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-c.txt
 
-real	0m0.921s
-user	0m0.746s
-sys	0m0.007s
+real	0m0.658s
+user	0m0.498s
+sys	0m0.005s
 time julia src/soft.jl msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-jl.txt
 
-real	0m1.445s
-user	0m2.797s
-sys	0m1.414s
+real	0m1.881s
+user	0m2.933s
+sys	0m1.405s
 time python3 src/soft.py msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-py.txt
 
-real	0m4.584s
-user	0m4.419s
-sys	0m0.067s
+real	0m4.663s
+user	0m4.461s
+sys	0m0.078s
 time freefem++-mpi -v 0 -f src/soft.edp > out/sphere-1.905-0-38-1480-edp.txt
 
-real	0m6.425s
-user	0m6.371s
-sys	0m0.043s
+real	0m6.452s
+user	0m6.379s
+sys	0m0.044s
 time gnuplot -c src/soft.gp > out/sphere-1.905-0-38-1480-gp.txt
 
-real	0m0.054s
-user	0m0.043s
-sys	0m0.005s
+real	0m0.061s
+user	0m0.044s
+sys	0m0.007s
 
 cd out
 gnuplot -p -c ../bin/polar.gp sphere-1.905-0-38-1480*.txt
@@ -80,19 +80,45 @@ mv polar.svg ../figs/sphere-1.905-0-38-1480.svg
 mv polar.pdf ../figs/sphere-1.905-0-38-1480.pdf
 
 gnuplot -p -c ../bin/polar.gp YFT*.txt
-qt.qpa.fonts: Populating font family aliases took 57 ms. Replace uses of missing font family "Sans" with one that exists to avoid this cost. 
+qt.qpa.fonts: Populating font family aliases took 58 ms. Replace uses of missing font family "Sans" with one that exists to avoid this cost. 
 mv polar.svg ../figs/YFT-0-38-1480.svg
 mv polar.pdf ../figs/YFT-0-38-1480.pdf
 cd ..
+bash-3.2$ 
 ```
 
-### Results
+### Note
+
+For larger meshes Hmatrix based calculations is the requirement. Note the time of execution for YFT\_swimbladder\_origin.msh having 7502 mesh points for plain C version with gauessian elimination and FreeFem version with Hmatrix representation:
+
+```
+bash-3.2$ time ./bin/soft msh/YFT_swimbladder_origin.msh > out/YFT_swimbladder_origin-c.txt
+
+real	15m17.280s
+user	15m3.151s
+sys	0m9.557s
+bash-3.2$ time freefem++-mpi -v 0 -ng -f src/soft.edp -fm msh/YFT_swimbladder_origin.msh > YFT_swimbladder_origin-edp.txt
+
+real	1m51.404s
+user	1m50.658s
+sys	0m0.735s
+bash-3.2$ 
+
+```
+
+### Examples
+
+![](figs/sphere-1.905-600.png)
+Fig. 1. The sphere mesh with radius of $$a=1.905$$ cm having 600 nodes and 1196 triangular elements used for  verification.
 
 ![](figs/sphere-1.905-0-38-1480.svg)
-Fig. 1. The results for soft sphere with radius of $$a=1.905$$ cm in salt water $$c_0=1480$$ m/s at 38kHz.
+Fig. 2. The results obtained with codes written in several languages for soft sphere with radius of $$a=1.905$$ cm in salt water $$c_0=1480$$ m/s at 38kHz.
 
-![](figs/yft-0-38-1480.svg)
-Fig. 2. The results for vacuum filled YFT swimbladder in salt water $$c_0=1480$$ m/s at 38kHz 
+![](figs/YFT_swimbladder_origin.png)
+Fig. 3. The Yellow Fin Tuna swimbladder having 7502 nodes and 15000 triangular elements. 
+
+![](figs/YFT_swimbladder_origin-edp-0-38-1480.svg)
+Fig. 4. The results for vacuum filled YFT swimbladder in salt water $$c_0=1480$$ m/s at 38kHz.
 
 ![](figs/mm-bem-example.png)
-Fig. 3. The screendump from mm-bem web-page for low resolution mesh of 1.905 cm radius sphere along with theoretical curve for soft sphere in salt water $$c_0=1480$$ m/s at 38kHz.
+Fig. 5. The screendump from mm-bem web-page for low resolution mesh of 1.905 cm radius sphere along with theoretical curve for soft sphere in salt water $$c_0=1480$$ m/s at 38kHz.
