@@ -51,27 +51,32 @@ time ./bin/soft msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-c.txt
 
 real	0m0.658s
 user	0m0.498s
-sys	0m0.005s
+sys	   0m0.005s
 time julia src/soft.jl msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-jl.txt
 
 real	0m1.881s
 user	0m2.933s
-sys	0m1.405s
+sys	   0m1.405s
 time python3 src/soft.py msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-py.txt
 
 real	0m4.663s
 user	0m4.461s
-sys	0m0.078s
+sys	    0m0.078s
 time freefem++-mpi -v 0 -f src/soft.edp > out/sphere-1.905-0-38-1480-edp.txt
 
 real	0m6.452s
 user	0m6.379s
-sys	0m0.044s
+sys	   0m0.044s
+time python3 src/soft-bempp.py msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-bempp.txt
+
+real	0m10.900s
+user	0m11.660s
+sys 	0m0.633s
 time gnuplot -c src/soft.gp > out/sphere-1.905-0-38-1480-gp.txt
 
 real	0m0.061s
 user	0m0.044s
-sys	0m0.007s
+sys	   0m0.007s
 
 cd out
 gnuplot -p -c ../bin/polar.gp sphere-1.905-0-38-1480*.txt
@@ -89,19 +94,25 @@ bash-3.2$
 
 ### Note
 
-For larger meshes Hmatrix based calculations is the requirement. Note the time of execution for YFT\_swimbladder\_origin.msh having 7502 mesh points for plain C version with gauessian elimination and FreeFem version with Hmatrix representation:
+For larger meshes Hmatrix based calculations is the requirement. Note the time of execution for YFT\_swimbladder\_origin.msh having 7502 mesh points for plain C version with gauessian elimination and FreeFem version and Bempp version with Hmatrix representation:
 
 ```
 bash-3.2$ time ./bin/soft msh/YFT_swimbladder_origin.msh > out/YFT_swimbladder_origin-c.txt
 
 real	15m17.280s
 user	15m3.151s
-sys	0m9.557s
+sys. 	0m9.557s
 bash-3.2$ time freefem++-mpi -v 0 -ng -f src/soft.edp -fm msh/YFT_swimbladder_origin.msh > YFT_swimbladder_origin-edp.txt
 
 real	1m51.404s
 user	1m50.658s
-sys	0m0.735s
+sys	    0m0.735s
+bash-3.2$ time python3 src/soft-bempp.py msh/YFT_swimbladder_origin.msh > YFT_swimbladder_origin-bempp.txt
+qt.qpa.fonts: Populating font family aliases took 57 ms. Replace uses of missing font family "Sans" with one that exists to avoid this cost. 
+
+real	0m45.726s
+user	3m7.397s
+sys	   0m43.740s
 bash-3.2$ 
 
 ```

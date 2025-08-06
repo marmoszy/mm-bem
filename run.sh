@@ -11,6 +11,7 @@ time ./bin/soft msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-c.txt
 time julia src/soft.jl msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-jl.txt
 time python3 src/soft.py msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-py.txt
 time freefem++-mpi -v 0 -f src/soft.edp > out/sphere-1.905-0-38-1480-edp.txt
+time python3 src/soft-bempp.py msh/sphere-1.905-600.msh > out/sphere-1.905-0-38-1480-bempp.txt
 time gnuplot -c src/soft.gp > out/sphere-1.905-0-38-1480-gp.txt
 
 cd out
