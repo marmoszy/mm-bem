@@ -133,3 +133,6 @@ Fig. 4. The results for vacuum filled YFT swimbladder in salt water $$c_0=1480$$
 
 ![](figs/mm-bem-example.png)
 Fig. 5. The screendump from mm-bem web-page for low resolution mesh of 1.905 cm radius sphere along with theoretical curve for soft sphere in salt water $$c_0=1480$$ m/s at 38kHz.
+
+![](figs/fsphere-1.905-0-38-1480-1024-1540-1045.svg)
+Fig. 6. The scattering from fluid sphere ($$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$) with radius of $$a=1.905$$ cm in salt water ($$c_0=1480$$ m/s, $$\rho_1=1024$$ kg/m$$^3$$) at 38kHz. The results from bem calculations along with analytical solution.
