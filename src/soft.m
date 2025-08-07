@@ -60,7 +60,7 @@ psc = SL * u;
 % plot, print and save 
 s = [(0:359)' abs(psc)];
 fid=fopen('../out/soft-m.txt','w');fprintf(fid,'%d\t%.6f\n',s');fclose(fid);
-%!/usr/local/bin/gnuplot -p -c ../txt/polar.gp ../out/soft-m.txt
+%!/usr/local/bin/gnuplot -p -c ../bin/polar.gp ../out/soft-m.txt
 polarplot(th,20*log10(abs(psc))); rlim([-63 -20]);
 disp(['th0   = ' num2str(abs(psc(1))) ' (' num2str(20*log10(abs(psc(1)))) ')']);
 disp(['th180 = ' num2str(abs(psc(length(psc)/2))) ' (' num2str(20*log10(abs(psc(length(psc)/2)))) ')']);
