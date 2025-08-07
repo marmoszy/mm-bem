@@ -6,8 +6,8 @@ clear all; close all; clc; tic;
 
 % input parameters
 fname = '../msh/sphere-1.905-600.msh'; 
-%fname = '../msh/YFT_swimbladder_origin.msh';
-th= 0;       % plane wave direction angle in xy plane
+fname = '../msh/YFT_swimbladder_origin.msh';
+th= 270;       % plane wave direction angle in xy plane
 f = 38e3;    % its frequency
 c = 1480;    % sound speed in water
 

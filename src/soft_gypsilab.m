@@ -6,7 +6,7 @@ run('../../gypsilab/addpathGypsilab.m')  % Gypsilab path
 
 % params
 fname = '../msh/sphere-1.905-600.msh'; 
-%fname = '../msh/YFT_swimbladder_origin.msh';
+fname = '../msh/YFT_swimbladder_origin.msh';
 th=0; 
 f = 38e3; 
 c = 1480;  
