@@ -1,5 +1,5 @@
-## Minimalistic bem code for plane wave scattering from soft targets 
-### MM 3.8.2025
+## Minimalistic bem code for plane wave scattering from underwater targets 
+### MM 8.8.2025
 
 mm-bem contains collection of several source codes for calculating scattering pattern obtained when plane wave scatters from soft targets. It uses boundary element method with piecewise constant discontinuous finite elements in 3D (P0).
 
@@ -135,4 +135,11 @@ Fig. 4. The results for vacuum filled YFT swimbladder in salt water $$c_0=1480$$
 Fig. 5. The screendump from mm-bem web-page for low resolution mesh of 1.905 cm radius sphere along with theoretical curve for soft sphere in salt water $$c_0=1480$$ m/s at 38kHz.
 
 ![](figs/fsphere-1.905-0-38-1480-1024-1540-1045.svg)
-Fig. 6. The scattering from fluid sphere ($$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$) with radius of $$a=1.905$$ cm in salt water ($$c_0=1480$$ m/s, $$\rho_1=1024$$ kg/m$$^3$$) at 38kHz. The results from bem calculations along with analytical solution.
+Fig. 6. The scattering from fluid sphere ($$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$) with radius of $$a=1.905$$ cm in salt water ($$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$) at 38kHz. The results from bem calculations along with analytical solution.
+
+![](figs/spheres-1.905-600-1.0-300.png)
+Fig. 7. The spherical shell mesh with radiuses of $$a_1=1.905$$ cm having 600 nodes and $$a_2=1.0$$ cm having 300 nodes used for shell scattering  verification.
+
+
+![](figs/shell-0-38-1480.svg)
+Fig. 8. The scattering from spherical shell ($$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$, $$c_2=340$$ m/s, $$\rho_2=1.29$$ kg/m$$^3$$) with radiuses of $$a_1=1.905$$ cm and $$a_2=1$$ cm in salt water ($$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$) at 38kHz. The results from bem calculations along with analytical solution.

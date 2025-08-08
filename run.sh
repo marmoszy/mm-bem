@@ -23,3 +23,8 @@ gnuplot -p -c ../bin/polar.gp YFT*.txt
 mv polar.svg ../figs/YFT-0-38-1480.svg
 mv polar.pdf ../figs/YFT-0-38-1480.pdf
 cd ..
+
+# ploting analytic results
+gnuplot src/soft.gp | gnuplot -p bin/polar.gp
+gnuplot src/fluid.gp | gnuplot -p bin/polar.gp
+gnuplot src/shell.gp | gnuplot -p bin/polar.gp
