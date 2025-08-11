@@ -1,23 +1,21 @@
-% Scattering from fluid targets
-% using GYPSILAB toolbox for Matlab 
-% MM 6.6.2025 - based on the equations from Gonzalez, Elavia 2020
+% Scattering from fluid targets 
+% MM 6.6.2025 using GYPSILAB toolbox
+% based on the equations from Gonzalez, Elavia 2020
 clear all; close all; clc; tic
-run('../../gypsilab/addpathGypsilab.m')           % Gypsilab path
+run('../../gypsilab/addpathGypsilab.m')  % Gypsilab path
 
 fname = '../msh/sphere-1.905-600.msh'; 
 %fname = '../msh/YFT_swimbladder_origin.msh';
-f0 = 38e3; 
-th = 0;                % wave direction angle
-c0 = 1480;             % water medium
-rho0 = 1024; 
-c1 = 1540;             % fluid medium (target)
-rho1 = 1045;
+f0 = 38e3;  th0 = 360;             % wave direction angle
+c0 = 1480;  rho0 = 1024;           % water medium 
+c1 = 1540;  rho1 = 1045;           % fluid medium (target)
+oname = '../out/fluid-gypsilab.txt';
 
 k0 = 2*pi*f0/c0;       % sea water;
 k1 = 2*pi*f0/c1;       % fish body
-d = [cos(th*pi/180) sin(th*pi/180) 0];
 
-% input mesh
+disp("Assembling ...")
+disp(fname) % input mesh
 [vx,fx] = mshReadMsh(fname);
 mesh = msh(vx,fx);       % mshSphere(600,0.01905); 
 sigma = dom(mesh, 3);                    % quadrature
@@ -29,6 +27,9 @@ I  = integral(sigma,u,u);                          % identity
 rho = (rho0+rho1)/2;
 II = [rho*I zeros(size(I));zeros(size(I)) rho*I];  % scaled identity
 
+disp("Solving ..."); ss=[];
+for th=0:th0
+d = [cos(th*pi/180) sin(th*pi/180) 0];
 % incident wave
 PW = @(X) exp(1i*k0*X*d');              
 gradxPW{1} = @(X) 1i*k0*d(1).*PW(X);
@@ -42,25 +43,30 @@ uu = (II + A0 - A1) \ [-f; g/rho0];
 N = size(uu,1)/2;
 
 % far field solution
-th = (0:359)' * pi/180;
-r1 = [cos(th),sin(th),zeros(size(th))]; % far field cicle
+th1 = (0:359)' * pi/180;
+r1 = [cos(th1),sin(th1),zeros(size(th1))]; % far field cicle
 xdoty   = @(X,Y) X(:,1).*Y(:,1) + X(:,2).*Y(:,2) + X(:,3).*Y(:,3); 
 Ginf  = @(X,Y) exp(-1i*k0*xdoty(X,Y))/(4*pi);
 gradxGinf{1} = @(X,Y) -1i*k0*X(:,1).*exp(-1i*k0*xdoty(X,Y))/(4*pi);
 gradxGinf{2} = @(X,Y) -1i*k0*X(:,2).*exp(-1i*k0*xdoty(X,Y))/(4*pi);
 gradxGinf{3} = @(X,Y) -1i*k0*X(:,3).*exp(-1i*k0*xdoty(X,Y)/(4*pi));
-Sinf = integral(r1, sigma, Ginf, u);
-Dinf = integral(r1, sigma, gradxGinf, ntimes(u)) ;
-psc = rho0 * Dinf * uu(1:N) + rho0.^2 * Sinf * uu(N+1:2*N); % Far field radiation
+SL = integral(r1, sigma, Ginf, u);
+DL = integral(r1, sigma, gradxGinf, ntimes(u)) ;
+psc = rho0 * DL * uu(1:N) + rho0.^2 * SL * uu(N+1:2*N); % scattered
 
-% plot, print and save 
-s = [(0:359)' abs(psc)];
-fid=fopen('../out/fluid-gypsilab.txt','w');fprintf(fid,'%d\t%.6f\n',s');fclose(fid);
-%!/usr/local/bin/gnuplot -p -c ../bin/polar.gp ../out/fluid-gypsilab.txt
-polarplot(th,max(-63,20*log10(abs(psc)))); rlim([-63 -20])
-disp(['th0   = ' num2str(abs(psc(1))) ' (' num2str(20*log10(abs(psc(1)))) ')']);
-disp(['th180 = ' num2str(abs(psc(length(psc)/2))) ' (' num2str(20*log10(abs(psc(length(psc)/2)))) ')']);
-toc;
-
+% save, plot and print
+s = [(0:359)' abs(psc)]; mode=['w','a'];
+fid=fopen(oname,mode((th~=th0(1))+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n\n');fclose(fid);
+%!/usr/local/bin/gnuplot -c ../bin/polar.gp ../out/scat3-gypsilab.txt
+polarplot(th1,max(-63,20*log10(abs(psc)))); rlim([-63 -20]);title(th);drawnow
+i = mod(th+180,360)+1; % backscattering angle index
+ss = [ss; s(i,:)];
+disp([num2str(s(i,1)) ' ' num2str(s(i,2)) ]);
+end; 
+fid=fopen(strrep(oname,'.txt','-bsl.txt'),'w');fprintf(fid,'%d\t%.6f\n',ss');fclose(fid);
+if size(ss,1)>1
+    polarplot(ss(:,1)*pi/180,max(-63,20*log10(ss(:,2)))); rlim([-63 -20]);title('TS');
+end
+toc
 
 

@@ -24,9 +24,9 @@ set key at screen 0.950,0.925
 plot for [f in fnames] sprintf("%s",f) u ($1*pi/180):(max(tsmin,20*log10($2))) w l t f
 
 if(fnames ne '<cat') {
-  replot
-  set term pdfcairo; set output sprintf("%s.pdf",oname);
-  replot
+  #replot
+  #set term pdfcairo; set output sprintf("%s.pdf",oname);
+  #replot
   set term svg; set output sprintf("%s.svg",oname);
   replot
 }

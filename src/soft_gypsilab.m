@@ -6,46 +6,56 @@ run('../../gypsilab/addpathGypsilab.m')  % Gypsilab path
 
 % params
 fname = '../msh/sphere-1.905-600.msh'; 
-fname = '../msh/YFT_swimbladder_origin.msh';
-th=0; 
-f = 38e3; 
-c = 1480;  
+%fname = '../msh/YFT_swimbladder_origin.msh';
+th0 = 360; 
+f0 = 38e3; 
+c0 = 1480;  
+oname='../out/soft-gypsilab.txt';
+%oname = '../out/YFT_swimbladder_origin-gypsilab.txt';
 
-k = 2*pi*f/c;  %d  = [0 -1 0];
-d = [cos(th*pi/180) sin(th*pi/180) 0];
+disp("Assembling ...");
+k0 = 2*pi*f0/c0;  %d  = [0 -1 0];
 
 % input mesh
 [vx,fx] = mshReadMsh(fname);
 mesh = msh(vx,fx);       % mshSphere(600,0.01905); 
 sigma = dom(mesh,3);     % Domain gss=3
 u = fem(mesh,'P0');      % Finite elements typ='P0'|'P1';
-
-% Incident wave
-PW = @(X) exp(1i*k*X*d'); 
-
-% Surface solution 
-Gxy = @(X,Y) femGreenKernel(X,Y,'[exp(ikr)/r]',k);
+Gxy = @(X,Y) femGreenKernel(X,Y,'[exp(ikr)/r]',k0);
 S = 1/(4*pi) .* integral(sigma,sigma,u,Gxy,u,1e-5);   % tol=1e-5
 Sr  = 1/(4*pi) .* regularize(sigma,sigma,u,'[1/r]',u);
 S = S + Sr;
+
+disp("Solving ..."); ss=[];
+for th=0:th0,
+% Incident wave
+d = [cos(th*pi/180) sin(th*pi/180) 0];
+PW = @(X) exp(1i*k0*X*d'); 
+
+% Surface solution 
 f = integral(sigma,u,PW);
 %[Lh,Uh] = lu(S);lambda  = Uh \ (Lh \ f); 
 lambda = S \ -f;
 
 % far field solution
-th = pi/180 .* (1:360)';
-r1 = [cos(th),sin(th),zeros(size(th))];
+th1 = pi/180 .* (1:360)';
+r1 = [cos(th1),sin(th1),zeros(size(th1))];
 xdoty = @(X,Y) X(:,1).*Y(:,1) + X(:,2).*Y(:,2) + X(:,3).*Y(:,3); 
-Ginf  = @(X,Y) 1/(4*pi) .* exp(-1i*k*xdoty(X,Y));
+Ginf  = @(X,Y) 1/(4*pi) .* exp(-1i*k0*xdoty(X,Y));
 SL = integral(r1,sigma,Ginf,u);
 psc = SL * lambda;  
 
-% plot, print and save 
-s = [(0:359)' abs(psc)];
-fid=fopen('../out/soft-gypsilab.txt','w');fprintf(fid,'%d\t%.6f\n',s');fclose(fid);
-%!/usr/local/bin/gnuplot -p -c ../bin/polar.gp ../out/soft-gypsilab.txt
-polarplot(th,20*log10(abs(psc))); rlim([-63 -20])
-disp(['th0   = ' num2str(abs(psc(1))) ' (' num2str(20*log10(abs(psc(1)))) ')']);
-disp(['th180 = ' num2str(abs(psc(length(psc)/2))) ' (' num2str(20*log10(abs(psc(length(psc)/2)))) ')']);
-toc;
-
+% save, plot and print
+s = [(0:359)' abs(psc)]; mode=['w','a'];
+fid=fopen(oname,mode((th~=th0(1))+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n\n');fclose(fid);
+%!/usr/local/bin/gnuplot -c ../bin/polar.gp ../out/soft-gypsilab.txt
+polarplot(th1,max(-63,20*log10(abs(psc)))); rlim([-63 -20]);title(th);drawnow
+i = mod(th+180,360)+1; % backscattering angle index
+ss = [ss; s(i,:)];
+disp([num2str(s(i,1)) ' ' num2str(s(i,2)) ]);
+end; 
+fid=fopen(strrep(oname,'.txt','-bsl.txt'),'w');fprintf(fid,'%d\t%.6f\n',ss');fclose(fid);
+if size(ss,1)>1
+    polarplot(ss(:,1)*pi/180,max(-63,20*log10(ss(:,2)))); rlim([-63 -20]);title('TS');
+end
+toc
