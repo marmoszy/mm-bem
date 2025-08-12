@@ -7,14 +7,14 @@ run('../../gypsilab/addpathGypsilab.m')  % Gypsilab path
 % params
 fname = '../msh/sphere-1.905-600.msh'; 
 %fname = '../msh/YFT_swimbladder_origin.msh';
-th0 = 360; 
+th0 = 360; ph0 = 0;       % wave direction angles
 f0 = 38e3; 
 c0 = 1480;  
 oname='../out/soft-gypsilab.txt';
 %oname = '../out/YFT_swimbladder_origin-gypsilab.txt';
 
 disp("Assembling ...");
-k0 = 2*pi*f0/c0;  %d  = [0 -1 0];
+k0 = 2*pi*f0/c0;
 
 % input mesh
 [vx,fx] = mshReadMsh(fname);
@@ -29,7 +29,7 @@ S = S + Sr;
 disp("Solving ..."); ss=[];
 for th=0:th0,
 % Incident wave
-d = [cos(th*pi/180) sin(th*pi/180) 0];
+d = [cos(th*pi/180)*cos(ph0*pi/180) sin(th*pi/180)*cos(ph0*pi/180) sin(ph0*pi/180)];
 PW = @(X) exp(1i*k0*X*d'); 
 
 % Surface solution 
@@ -47,7 +47,7 @@ psc = SL * lambda;
 
 % save, plot and print
 s = [(0:359)' abs(psc)]; mode=['w','a'];
-fid=fopen(oname,mode((th~=th0(1))+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n\n');fclose(fid);
+fid=fopen(oname,mode((th~=0)+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n\n');fclose(fid);
 %!/usr/local/bin/gnuplot -c ../bin/polar.gp ../out/soft-gypsilab.txt
 polarplot(th1,max(-63,20*log10(abs(psc)))); rlim([-63 -20]);title(th);drawnow
 i = mod(th+180,360)+1; % backscattering angle index
@@ -59,3 +59,4 @@ if size(ss,1)>1
     polarplot(ss(:,1)*pi/180,max(-63,20*log10(ss(:,2)))); rlim([-63 -20]);title('TS');
 end
 toc
+

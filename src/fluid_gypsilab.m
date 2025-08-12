@@ -56,7 +56,7 @@ psc = rho0 * DL * uu(1:N) + rho0.^2 * SL * uu(N+1:2*N); % scattered
 
 % save, plot and print
 s = [(0:359)' abs(psc)]; mode=['w','a'];
-fid=fopen(oname,mode((th~=th0(1))+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n\n');fclose(fid);
+fid=fopen(oname,mode((th~=0)+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n\n');fclose(fid);
 %!/usr/local/bin/gnuplot -c ../bin/polar.gp ../out/scat3-gypsilab.txt
 polarplot(th1,max(-63,20*log10(abs(psc)))); rlim([-63 -20]);title(th);drawnow
 i = mod(th+180,360)+1; % backscattering angle index
