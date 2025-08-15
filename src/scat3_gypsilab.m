@@ -70,6 +70,8 @@ A31 =  calderon2(sigma3, sigma1, v3, v1, k1, rho1);
 Z23 = 0*calderon2(sigma2, sigma3, v2, v3, k1, rho1);
 Z32 = 0*calderon2(sigma3, sigma2, v3, v2, k1, rho1);
 
+[L, U] = lu([A11, A12, A13; A21, A22, Z23; A31, Z32, A33]);
+
 disp("Solving ..."); ss=[];
 for th=0:th0
 % incident wave
@@ -83,7 +85,8 @@ gradxPW{3} = @(X) 1i*k0*d(3).*PW(X);
 f = integral(sigma1, v1, PW);               % incident traces
 g = integral(sigma1, ntimes(v1), gradxPW); 
 z2 = zeros(N2,1); z3 = zeros(N3,1);
-uu = [A11, A12, A13; A21, A22, Z23; A31, Z32, A33] \ [-f; g/rho0; z2; z2; z3; z3];
+uu = U \ (L \ [-f; g/rho0; z2; z2; z3; z3]);
+%uu = [A11, A12, A13; A21, A22, Z23; A31, Z32, A33] \ [-f; g/rho0; z2; z2; z3; z3];
 
 % far field solution
 th1 = (0:359)' * pi/180;

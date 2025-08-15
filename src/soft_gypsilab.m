@@ -25,6 +25,7 @@ Gxy = @(X,Y) femGreenKernel(X,Y,'[exp(ikr)/r]',k0);
 S = 1/(4*pi) .* integral(sigma,sigma,u,Gxy,u,1e-5);   % tol=1e-5
 Sr  = 1/(4*pi) .* regularize(sigma,sigma,u,'[1/r]',u);
 S = S + Sr;
+[L,U] = lu(S);
 
 disp("Solving ..."); ss=[];
 for th=0:th0,
@@ -34,8 +35,7 @@ PW = @(X) exp(1i*k0*X*d');
 
 % Surface solution 
 f = integral(sigma,u,PW);
-%[Lh,Uh] = lu(S);lambda  = Uh \ (Lh \ f); 
-lambda = S \ -f;
+lambda  = U \ (L \ -f);  % lambda = S \ -f;
 
 % far field solution
 th1 = pi/180 .* (1:360)';

@@ -49,6 +49,8 @@ A22 = A22 + [rho12*I2 zeros(size(I2));zeros(size(I2)) rho12*I2];
 A12 = -calderon2(sigma1, sigma2, v1, v2, k1, rho1);
 A21 =  calderon2(sigma2, sigma1, v2, v1, k1, rho1);
 
+[L, U] = lu([A11, A12; A21, A22]);
+
 disp("Solving ..."); ss=[];
 for th=0:th0
 % incident wave and its gradient
@@ -62,14 +64,14 @@ gradxPW{3} = @(X) 1i*k0*d(3).*PW(X);
 f = integral(sigma1, v1, PW);               % incident wave traces
 g = integral(sigma1, ntimes(v1), gradxPW); 
 z = zeros(N2,1);
-uu = [A11, A12; A21, A22]/rho0 \ [-f; g/rho0; z; z]; 
+uu =  U \ (L \ [-f; g/rho0; z; z]); 
+% uu = [A11, A12; A21, A22]/rho0 \ [-f; g/rho0; z; z]; 
 
 % far field solution
 th1 = (0:359)' * pi/180;
 r1 = [cos(th1),sin(th1),zeros(size(th1))];  % far field circle
 [SL, DL] = potential2(r1, sigma1, v1, k0);
 psc = rho0 * DL * uu(1:N1) + rho0.^2 * SL * uu(N1+1:2*N1); % scattered
-psc = psc/rho0;
 
 % save, plot and print
 s = [(0:359)' abs(psc)]; mode=['w','a'];

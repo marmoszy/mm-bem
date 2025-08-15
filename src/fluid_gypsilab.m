@@ -26,6 +26,7 @@ A1 = calderon2(sigma, sigma, u, u, k1, rho1);
 I  = integral(sigma,u,u);                          % identity
 rho = (rho0+rho1)/2;
 II = [rho*I zeros(size(I));zeros(size(I)) rho*I];  % scaled identity
+[L,U] = lu(II + A0 - A1);
 
 disp("Solving ..."); ss=[];
 for th=0:th0
@@ -39,7 +40,7 @@ gradxPW{3} = @(X) 1i*k0*d(3).*PW(X);
 % surface solution
 f = integral(sigma, u, PW);             % incident wave traces
 g = integral(sigma, ntimes(u), gradxPW);  
-uu = (II + A0 - A1) \ [-f; g/rho0];
+uu  = U \ (L \ [-f; g/rho0]); %uu = (II + A0 - A1) \ [-f; g/rho0];
 N = size(uu,1)/2;
 
 % far field solution
