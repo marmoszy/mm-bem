@@ -5,9 +5,14 @@
 <script src="https://cdn.jsdelivr.net/pyodide/v0.23.2/full/pyodide.js">
 </script>
 
+<!--
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+-->
+
 <style> 
-body,textarea {font-size: 16px;}
-optgroup {font-size: 16px;}
+html,body,textarea,select,optgroup {font-size: 16px;}
+input[type='file'],input[type='button'] {font-size: 16px; }
 </style>
 
 <center>
@@ -17,9 +22,9 @@ optgroup {font-size: 16px;}
 <center>
 <table><tr><td>
 
-<div style="width:440;height:160;border-width:1;border-style:solid;padding:20px;display:block;background-color:#ffffe6">
+<div style="width:440;height:172;border-width:1;border-style:solid;padding:20px;display:block;background-color:#ffffe6">
 <label for="def">1. Target: </label>
-<select id="def" onchange="select()" style="background-color:#e6fff2">
+<select id="def" onchange="select()" style="background-color:#e6fff2;max-width:360px">
 <optgroup>
   <option value="[sphere(0.01905), [0, 0, 0]]">Low resolution sphere</option>
   <option value="[sphere(0.01905,3), [0, 0, 0]]">Medium resolution sphere</option>
@@ -32,10 +37,10 @@ optgroup {font-size: 16px;}
   <option value="[sphere(0.005), [-0.01, 0, 0]],|[sphere(0.005), [0.01, 0, 0]]">Two spheres</option>
   <option value="[sphere(0.005), [-0.01, 0, 0]],|[sphere(0.005), [0.01, 0, 0]],|[sphere(0.005), [0,-0.01, 0]],|[sphere(0.005), [0, 0.01, 0]]">Four spheres</option>
   <option value="[sphere(0.005), [-0.01, 0, -0.01]],|[sphere(0.005), [0.01, 0, -0.01]],|[sphere(0.005), [0,-0.01, -0.01]],|[sphere(0.005), [0, 0.01, -0.01]],|[sphere(0.005), [-0.01, 0, 0.01]],|[sphere(0.005), [0.01, 0, 0.01]],|[sphere(0.005), [0,-0.01, 0.01]],|[sphere(0.005), [0, 0.01, 0.01]]">Eight spheres</option>
-  <option value="simplify10_YFT_swimbladder_origin_msh">simplify10_YFT_swimbladder_origin.msh</option>
+  <option value="simplify10_YFT_swimbladder_origin_msh">simplify10_YFT_swimbladder_origin</option>
 </optgroup>
 </select>
-<br><span style="margin-left:64px"/> or <input accept="model/mesh"  id="openfile" title="Load from msh (ascii 2.0) file" type="file" onchange="readFile(this);"/>
+<br><span style="margin-left:64px"/> or <input accept="model/mesh"  id="openfile" title="Load from msh (ascii 2.0) file" type="file" onchange="readFile(this);" multiple/>
 
 <br><br>
 
@@ -92,12 +97,12 @@ optgroup {font-size: 16px;}
 </optgroup>
 </select>
 
-<br><br>
+<br>
 </div>
 </td><td>
-<div style="width:440;height:160;border-width:1;border-style:solid;padding:20px;display:block;background-color:#ffffe6">
+<div style="width:440px;height:172px;border-width:1;border-style:solid;padding:20px;display:block;background-color:#ffffe6">
 
-<textarea id="obj" style="width:425;height:72" onchange="change(this.value)" title="You can modify the values and click outside to update">[sphere(0.01905), [0, 0, 0]]</textarea>
+<textarea id="obj" style="width:425;height:60" onchange="change(this.value)" title="You can modify the values and click outside to update">[sphere(0.01905), [0, 0, 0]]</textarea>
 
 <br><br>
 <label for="out">Calculation engine: </label> 
@@ -105,6 +110,7 @@ optgroup {font-size: 16px;}
 <optgroup>
   <option value="py_soft">pyodide</option>
   <option value="js_soft">math.js</option>
+  <option value="soft.js">math.js worker</option>
   <option value="none">do not calculate</option>
 </optgroup>
 </select>
@@ -124,7 +130,7 @@ optgroup {font-size: 16px;}
 </optgroup>
 </select>
 
-<br><span style="margin-left:64px"/> or <input accept="text/plain"  id="openfile2" title="Load from two-columns txt file" type="file" onchange="readFile2(this);"/>
+<br><span style="margin-left:64px"/> or <input accept="text/plain"  id="openfile2" title="Load from two-columns txt file" type="file" onchange="readFile2(this);" multiple/>
 
 </div>
 
@@ -158,7 +164,7 @@ optgroup {font-size: 16px;}
    </svg>
 </div>
 
-<input type=button value="save to svg file" onclick='writeFile(document.getElementById("svg1").outerHTML,"mm-bem-polar.svg");' /> 
+<input type=button value="Save to svg file" onclick='writeFile(document.getElementById("svg1").outerHTML,"mm-bem-polar.svg");' /> 
 	
 </td><td>
 
@@ -220,24 +226,24 @@ optgroup {font-size: 16px;}
 </svg>
 </div>
 
-<input type=button value="save to svg file" onclick='writeFile(document.getElementById("svg").outerHTML,"mm-bem-mesh.svg");' /> 
+<input type=button value="Save to svg file" onclick='writeFile(document.getElementById("svg").outerHTML,"mm-bem-mesh.svg");' /> 
 
 </td></tr><tr><td>
 
 <textarea id="msh" style="width:480px;height:440px;background-color:#e6fff2">
 </textarea>
 <br>
-<input type=button value="save to msh file" onclick='writeFile(document.getElementById("msh").value,"mm-bem.msh");' /> 
+<input type=button value="Save to msh file" onclick='writeFile(document.getElementById("msh").value,"mm-bem.msh");' /> 
 
 </td><td>
 
 <textarea id="txt" style="width:240;height:440;background-color:#ffe6e6" ondrop="drop(event);" onchange="plot();" onpaste="setTimeout(plot,0);">
 </textarea>
 
-<textarea id="txt2" style="width:240;height:440;background-color:#e6ffff">
+<textarea id="txt2" style="width:240;height:440;background-color:#e6ffff" ondrop="drop2(event);">
 </textarea>
 <br>
-<input type=button value="save to txt file" onclick='writeFile(document.getElementById("txt").value,"mm-bem.txt");' /> 
+<input type=button value="Save to txt file" onclick='writeFile(document.getElementById("txt").value,"mm-bem.txt");' /> 
 
 </td></tr></table>
 </center>
@@ -245,35 +251,44 @@ optgroup {font-size: 16px;}
 <textarea id="ta" style="opacity:0;position:absolute;z-index:-9999;pointer-events:none;"></textarea>
 
 <br><br>
-<span title="Marek Moszyński 2025">MM 8.8.2025 (mm-bem v1.5)</span>
+<span title="Marek Moszyński 2025">MM 15.8.2025 (mm-bem v1.57)</span>
 
 <script>
 // globals
 var pi=Math.PI;
-var a=0.4, b=-0.4, c=0.0;     // 3D view angles
-var a11,a12,a13,a21,a22,a23;  // 2D projection coefficients
+var a = 0.4, b = -0.2, c = 0.0;     // 3D view angles
+var a11, a12, a13, a21, a22, a23;   // 2D projection coefficients
 var zoom = 1, xoff = 0, yoff = 0;
+
 //var bkg1 = "#004488", bkg2 = "#0055aa";
 var bkg1 = "#e8ebff", bkg2 = "#fff";
-var axcolors = ["red","green","blue"];
-var mshcolor = "#0b22ae"; //"black";
-var wh=Math.max(window.innerHeight-150,400), bkg = bkg1; //"#000077"; // "#ffdd88"; "darkblue"; //
-var axes_onoff=1;
+var bkg = bkg1; //"#000077"; // "#ffdd88"; "darkblue"; //
 
-function zoomin() {zoom*=2; xoff-=wh/4*zoom; yoff-=wh/4*zoom;}
+var axcolors = ["red", "green", "blue"];
+var mshcolor = "#0b22ae"; //"black";
+var axes_onoff = 1, box_onoff = 1;
+
+var wh = Math.max(window.innerHeight-150,400);
+
+function zoomin()  {zoom*=2; xoff-=wh/4*zoom; yoff-=wh/4*zoom;}
 function zoomout() {if(zoom>1/8) {xoff+=wh/4*zoom; yoff+=wh/4*zoom; zoom/=2; }}
 
 function init_mouse() {
-	let delta=8,sX,sY,clk=0;
+	let delta=8, sX, sY, clk=0;
 	var el=document.getElementById("svg1");
 	el.onmousedown = function (event) {sX = event.pageX; sY = event.pageY;  clk=1;}
 	el.onmouseup = function (event) {clk=0;}
-	el.onmousemove = function (event) {if(clk==0) return;
+	el.onmousemove = function (event) {
+		if(clk==0) return;
 		var dX = event.pageX-sX, dY = event.pageY-sY;
-		if (Math.abs(dX) < delta && Math.abs(dY) < delta) {return;} 
-		else {
-			if(Math.abs(dX)>Math.abs(dY)) {a -= dX/4*pi/180;} else {b -= dY/4*pi/180;}
-			tle_id=-1;
+		if (Math.abs(dX) < delta && Math.abs(dY) < delta) {
+			return;
+		} else {
+			if(Math.abs(dX)>Math.abs(dY)) {
+				a -= dX/4*pi/180;
+			} else {
+				b -= dY/4*pi/180;
+			}
 			init3d();
 		}
 		sX = event.pageX; sY = event.pageY;
@@ -281,17 +296,21 @@ function init_mouse() {
 }
 
 document.onkeydown = function(e) {
-  if(e.keyCode==65 ) { // ctl A
-	  if(e.ctrlKey) {e.preventDefault(); axes_onoff^=1;}
+  if(e.keyCode==65 ) { // ctrl A
+    if(e.ctrlKey) {e.preventDefault(); axes_onoff^=1;}
   }
-  if(e.keyCode==66 ) { // ctl B
-	if(e.ctrlKey) {e.preventDefault(); 
-	  bkg = (bkg!==bkg1)?bkg1:bkg2;  
-	  el=document.getElementById("svgdiv");
+  if(e.keyCode==66 ) { // ctrl B
+    if(e.ctrlKey) {e.preventDefault(); box_onoff^=1;}
+/*
+    if(e.ctrlKey) {
+      e.preventDefault(); 
+      bkg = (bkg!==bkg1)?bkg1:bkg2;  
+      el=document.getElementById("svgdiv");
       if(el) {
-		el.setAttribute("style","background:"+bkg+";width:"+(wh+80));
-	  }
+        el.setAttribute("style","background:"+bkg+";width:"+(wh+80));
+      }
     }
+*/
   }
   if(e.keyCode==72 ) { // ctl H
 	  if(e.ctrlKey) {e.preventDefault(); alert(about);}
@@ -366,6 +385,45 @@ function draw_xyzpoints(el,pp) {
   el.setAttribute("points",s); //cnt1!=cnt2?s:"");	
 }
 
+function draw_box(svg,id,xmin,xmax,ymin,ymax,zmin,zmax,color,w) {
+	var p1=V(P(xmin,ymin,zmin)), p2=V(P(xmin,ymin,zmax));
+	var p3=V(P(xmin,ymax,zmax)), p4=V(P(xmin,ymax,zmin));
+	var p5=V(P(xmax,ymin,zmin)), p6=V(P(xmax,ymin,zmax));
+	var p7=V(P(xmax,ymax,zmax)), p8=V(P(xmax,ymax,zmin));
+	var p9=[];
+	//for(var i=0;i<360;i++) {
+	//  p9.push(V(P([(xmax-xmin)/2*Math.cos(i*pi/180),(ymax-ymin)/2*Math.sin(i*pi/180),zmax])));
+	//}
+	var xo=xmin+(xmax-xmin)/3;
+	var p11=V(P(xo,ymin,zmin)), p12=V(P(xo,ymin,zmax));
+	var p13=V(P(xo,ymax,zmax)), p14=V(P(xo,ymax,zmin));
+	xo += (xmax-xmin)/3;
+	var p15=V(P(xo,ymin,zmin)), p16=V(P(xo,ymin,zmax));
+	var p17=V(P(xo,ymax,zmax)), p18=V(P(xo,ymax,zmin));
+
+	var yo=ymin+(ymax-ymin)/3;
+	var p21=V(P(xmin,yo,zmin)), p22=V(P(xmin,yo,zmax));
+	var p23=V(P(xmax,yo,zmax)), p24=V(P(xmax,yo,zmin));
+	yo += (ymax-ymin)/3;
+	var p25=V(P(xmin,yo,zmin)), p26=V(P(xmin,yo,zmax));
+	var p27=V(P(xmax,yo,zmax)), p28=V(P(xmax,yo,zmin));
+
+	var zo=zmin+(zmax-zmin)/3;
+	var p31=V(P(xmin,ymin,zo)), p32=V(P(xmin,ymax,zo));
+	var p33=V(P(xmax,ymax,zo)), p34=V(P(xmax,ymin,zo));
+	zo += (zmax-zmin)/3;
+	var p35=V(P(xmin,ymin,zo)), p36=V(P(xmin,ymax,zo));
+	var p37=V(P(xmax,ymax,zo)), p38=V(P(xmax,ymin,zo));
+
+	var el = document.getElementById(svg);
+	svg_createpath(el,id+"1",[[p1,p2,p3,p4],[p5,p6,p7,p8],[p1,p5],[p2,p6],[p3,p7],[p4,p8],p9
+] , color||'gray', w||0.5, "1,0");
+	svg_createpath(el,id,[[p11,p12,p13,p14],[p15,p16,p17,p18]
+,[p21,p22,p23,p24],[p25,p26,p27,p28]
+,[p31,p32,p33,p34],[p35,p36,p37,p38]
+] , color||'gray', w||0.5, "2,4");
+}
+
 // ---- matrix functions
 
 const PI = Math.PI;
@@ -414,6 +472,8 @@ function Rx(a, M = R1()) {
   return mul(R, M);
 }
 
+// --- mesh functions
+
 function msh_parse(s) {
 	var lines = s.split('\n');
 	const n = parseInt(lines[4]);
@@ -427,16 +487,29 @@ var vx=[],fx=[],x0,y0,z0,M=[];
 function init_mesh() {
 	var s=document.getElementById("msh").value;
 	clear_mesh();
-	[vx,fx] = msh_parse(s);
+	var ss=s.split('$EndElements\n');
+	vx=[];fx=[];
+	for(var i=0;i<ss.length;i++) {
+		if(ss[i].length>0) {
+			var vi=[],fi=[];
+			[vi,fi] = msh_parse(ss[i]);
+			var N = vx.length;
+			vx = vx.concat(vi);
+			for(var j=0;j<fi.length;j++) {
+				fi[j][0]+=N; fi[j][1]+=N; fi[j][2]+=N;
+			}
+			fx=fx.concat(fi);
+		}
+	}
+	//[vx,fx] = msh_parse(s);
 	//[vx,fx] = sphere(0.01905,3);
 	//[vx,fx] = cylinder(0.01905,0.01,0.01);
 	//[vx,fx] = ellipsoid(0.01905,0.01,0.01);
-	x0=0.0, y0=0; z0=0;
-	M = R1(); //Ry(-45);
+	x0=0.0, y0=0; z0=0; M = R1(); //Ry(-45);
 
-	//msh_str([[vx,fx]]);
-	//mesh=msh_flush();
-	//console.log(mesh);
+	msh_str([[vx,fx]]);
+	s = msh_flush();
+	document.getElementById("msh").value = s;
 }
 
 function clear_mesh() {
@@ -447,7 +520,21 @@ function clear_mesh() {
 		}
 	}
 }
+
 function update_mesh() {
+	var pp=[];
+	for(var k=0;k<fx.length;k++) {
+		var p=[];
+		for(var j=0;j<3;j++) {
+			p.push(V(P(vx[fx[k][j]])));
+      		}
+		pp.push(p);
+	}
+	var svg = document.getElementById("svg1");
+	svg_createpath(svg, "M", pp, mshcolor, 0.5, "1,0");	
+}
+
+function update_mesh0() {
     for(var k=0;k<fx.length;k++) {
       var pp=[];
       for(var j=0;j<3;j++) {
@@ -533,6 +620,7 @@ function update_axes() {
   var el2=document.getElementById("lambda_0"+"_title");
   if(el2) el2.innerHTML='\u03bb<tspan dy="10">0</tspan>/2';
 
+  draw_box("svg1","B1",-l/2,l/2,-l/2,l/2,-l/2,l/2,box_onoff?'black':'none');
 }
 
 function init_sliders() { // sliders
@@ -561,9 +649,9 @@ function main() {
 
   el=document.getElementById("svgdiv");
   if(el) {
-	  el.setAttribute("style","background:"+bkg+";width:"+(wh+80)); //+";height:"+(wh+60));
-//	  el.style.width=(wh+60);
-//	  el.style.height=(wh+60);
+	  el.setAttribute("style","background:"+bkg+";width:"+(wh+80)+";height:"+(wh+80));
+	  el.style.width=(wh+80);
+	  el.style.height=(wh+80);
   } 
   init_mouse();
   init_mesh();
@@ -578,6 +666,7 @@ function main() {
 var about =`mm-bem web-demo MM 2025
 
 ctrl A - axes on/off
+ctrl B - box on/off
 ctrl + - zoom in
 ctrl - - zoom out
 ctrl R - zoom to unit distance
@@ -596,37 +685,52 @@ function select() {
 }
 
 function readFile(e) {  // local file reader
-	var file = e.files[0];
-	if (!file) return;
-	var reader = new FileReader();
-	reader.onload = function(e) {
-		document.getElementById("msh").value=e.target.result;
-		change(); // start calculations after reading
-	};
-	if(file.name.endsWith(".msh")) {
-		document.getElementById("openfile").value="";
-		document.getElementById("obj").value=file.name;
-		reader.readAsText(file);
-	} else {
-		alert("Only msh (ascii 2.0) files allowed") 
+	let k = 0;
+	let N = e.files.length;
+	for(var i=0; i<N; i++) {
+		var file = e.files[i];
+		if (!file) return;
+		if(i==0) {
+			document.getElementById("obj").value="";
+			document.getElementById("msh").value="";
+		}
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			k++;
+			document.getElementById("msh").value+=e.target.result;
+			if(k==N) change(); // start calculations after reading
+		};
+		if(file.name.endsWith(".msh")) {
+			document.getElementById("obj").value+=' '+file.name;
+			reader.readAsText(file);
+		} else {
+			alert("Only msh (ascii 2.0) files allowed") 
+		}
 	}
 }
 
 function readFile2(e) {  // local file reader
-	var file = e.files[0];
-	if (!file) return;
-	var reader = new FileReader();
-	reader.onload = function(e) {
-		document.getElementById("out2").value="none"
-		document.getElementById("txt2").value=e.target.result;
-		change2(); 
-	};
-	if(file.name.endsWith(".txt")) {
-		//document.getElementById("openfile2").value="";
-		document.getElementById("txt2").value="";
-		reader.readAsText(file);
-	} else {
-		alert("Only *.txt files allowed") 
+	let k = 0;
+	let N = e.files.length;
+	for(var i=0; i<N; i++) {
+		var file = e.files[i];
+		if (!file) return;
+		if(i==0) { 
+			document.getElementById("txt2").value="";
+			document.getElementById("out2").value="none"
+		}
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			document.getElementById("txt2").value += e.target.result;
+			k++;
+			if(k==N) change2(); 
+		};
+		if(file.name.endsWith(".txt")) {
+			document.getElementById("txt2").value="";
+			reader.readAsText(file);
+		} else {
+			alert("Only *.txt files allowed") 
+		}
 	}
 }
 
@@ -647,55 +751,102 @@ function writeFile(data, filename, type) {
 	}
 }
 
+var worker = undefined;
+
 function change() {
-    var obj = document.getElementById("obj").value;
-    if(obj[0]=='[') {
-        O = eval('['+obj+']');
-        O.forEach(o => msh_str(o));
-        document.getElementById("msh").value=msh_flush().replaceAll('\n','\n');
-    } else if(obj.endsWith(".msh")) {
-        // document.getElementById("msh").value='[already inplace]';  	
-    } else {
-        document.getElementById("msh").value=eval(obj);  	
-    }
-	// 3d update()
+	var obj = document.getElementById("obj").value;
+	if(obj[0]=='[') {
+		O = eval('['+obj+']');
+		O.forEach(o => msh_str(o));
+		document.getElementById("msh").value=msh_flush();
+	} else if(obj.endsWith(".msh")) {
+		// document.getElementById("msh").value='[already inplace]';  	
+	} else {
+		document.getElementById("msh").value=eval(obj);  	
+	}
+// 3d update()
 	init_mesh()
 	init3d();
-    // start calc
-    var out = document.getElementById("out").value;
-    document.getElementById("txt").value="Calculating ...";
-    if(out=="js_soft") {setTimeout(js_soft,100);}
-    else if(out=="py_soft") {setTimeout(py_soft,100);}
-    else { //if(out=="none") {
-        document.getElementById("txt").value="";
-	plot();
-    }
+// start calc
+	var out = document.getElementById("out").value;
+	document.getElementById("txt").value="Calculating ...\n";
+	if(typeof(worker) !== "undefined") {
+		worker.terminate();
+		worker = undefined;
+	}
+	if(out=="js_soft") {
+        	setTimeout(js_soft,100);
+	} else if(out=="soft.js") {
+		//worker = new Worker("soft.js");
+		let blob = new Blob([workerCode], { type: "application/javascript" });
+		worker = new Worker(URL.createObjectURL(blob));
+		worker.onmessage = function(event) {
+			var s = event.data;
+			if(s.startsWith('[') && s.endsWith(']')) {
+				document.getElementById("txt").value += s.slice(1,-1)+'\n';
+			} else {
+				document.getElementById("txt").value = JSON.parse(s);
+				plot();
+			}
+		};
+
+		var lines = document.getElementById("msh").value.split('\n');
+		th = parseFloat(document.getElementById("th").value);
+		f0 = parseFloat(document.getElementById("f0").value);
+		c0 = parseFloat(document.getElementById("c0").value);
+		worker.postMessage(JSON.stringify([lines,th,f0,c0]));
+
+	} else if(out=="py_soft") {
+		setTimeout(py_soft,100);
+	} else { //if(out=="none") {
+		document.getElementById("txt").value="";
+		plot();
+	}
 }
 
 function change2() {
-    var out2 = document.getElementById("out2").value;
-    var txt2 = document.getElementById("txt2").value;
-    if(out2!="none") {
-	var s = eval(out2);
-        document.getElementById("txt2").value=s;
-	plot("Q",s,"#4da6ff");
-    } else if(txt2.length>1) {
-	plot("Q",txt2,"#4da6ff");
-    } else {
-        document.getElementById("txt2").value="";
-        plot("Q","#");
-    }
+	var out2 = document.getElementById("out2").value;
+	var txt2 = document.getElementById("txt2").value;
+	if(out2!="none") {
+		var s = eval(out2);
+		document.getElementById("txt2").value=s;
+		plot("Q",s,"#4da6ff");
+	} else if(txt2.length>1) {
+		plot("Q",txt2,"#4da6ff");
+	} else {
+		document.getElementById("txt2").value="";
+		plot("Q","#");
+	}
 }
-	 
+
 function drop(e) {
-    e.preventDefault();
-    var file = e.dataTransfer.files[0];
-    var reader = new FileReader();
-      reader.onload = function(e) {
-      document.getElementById("txt").value = e.target.result;
-      plot();
-    };
-    reader.readAsText(file, "UTF-8");
+	e.preventDefault();
+	var file = e.dataTransfer.files[0];
+	var reader = new FileReader();
+	reader.onload = function(e) {
+		document.getElementById("txt").value = e.target.result;
+		plot();
+	};
+	reader.readAsText(file, "UTF-8");
+}
+
+function drop2(e) {
+	e.preventDefault();
+	let k = 0;
+	let N = e.dataTransfer.files.length;
+ 	for(var i=0; i<N; i++) {
+		if(i==0) {
+			document.getElementById("txt2").value="";
+		}
+		var file = e.dataTransfer.files[i];
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			document.getElementById("txt2").value += e.target.result;
+			k++;
+			if(k==N) change2();
+		};
+		reader.readAsText(file, "UTF-8");
+	}
 }
 
 function plot(id2,s,c) {
@@ -749,7 +900,7 @@ function svg_createpoint(svg,id,x,y,color,r,color2,title) { // building svg circ
 	el.innerHTML = "<title>"+(title || '')+"</title>";
 }
 
-function svg_createline(svg,id,x1,y1,x2,y2,color,w) { // building svg rect with coords in a string s for histogram bar
+function svg_createline(svg,id,x1,y1,x2,y2,color,w) { 
 	var el=document.getElementById(id);
 	if (!el) {
 		el = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -762,6 +913,27 @@ function svg_createline(svg,id,x1,y1,x2,y2,color,w) { // building svg rect with 
 	el.setAttribute("y1",y1);
 	el.setAttribute("x2",x2);
 	el.setAttribute("y2",y2);
+}
+
+function svg_createpath(svg,id,p,color,w,dd) { 
+	var el=document.getElementById(id);
+	if (!el) {
+		el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		el.setAttribute('id',id);
+		svg.appendChild(el);
+	}
+	el.setAttribute('stroke',color||'black');
+	el.setAttribute('stroke-width',w||1);
+  	el.setAttribute("stroke-dasharray",dd||"2,2"); 
+	el.setAttribute('fill','none');
+	s = '';
+	for(var i=0;i<p.length;i++) {
+		for(var j=0;j<p[i].length;j++) {
+			s+=(j==0?'M':'L')+p[i][j][0].toFixed(2)+' '+p[i][j][1].toFixed(2)+' ';
+		}
+		s+='Z';
+	}
+	el.setAttribute('d',s);
 }
 
 function svg_copy(e) {
@@ -1067,7 +1239,7 @@ function js_soft() {
 	);
 	const m = parseInt(lines[n + 7]);
 	const e = lines.slice(n + 8, n + 8 + m).map(line =>
-	  line.trim().split(/\s+/).slice(5, 8).map(x => parseInt(x) - 1)  // adjust for 0-based indexing
+	  line.trim().split(/\s+/).slice(5, 8).map(x => parseInt(x) - 1)  // 0-based indexing
 	);
 
 	// Triangle centers
@@ -1113,6 +1285,84 @@ function js_soft() {
 	document.getElementById("txt").value = s;
 	plot();
 }
+
+// math.js + worker code
+
+const workerCode = `
+// soft scattering worker
+// calling by: 	worker.postMessage(JSON.stringify([lines,th,f0,c0]));
+// result by:   worker.onmessage = function(e) {var result = e.data;};
+// MM 15.8.2025
+
+importScripts('https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js')
+//importScripts('https://unpkg.com/mathjs@14.6.0/lib/browser/math.js')
+//importScripts('https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.js');
+
+pi = Math.PI;
+
+onmessage = function(e) {
+	[lines,th,f0,c0] = JSON.parse(e.data);
+	var s = js_soft(lines,th,f0,c0);
+	postMessage(JSON.stringify(s));
+}
+
+function js_soft(lines,th,f0,c0) {
+	
+	var k = 2 * pi * f0 / c0;
+	d = [Math.cos(th*pi/180), Math.sin(th*pi/180), 0];
+
+	const n = parseInt(lines[4]);
+	const v = lines.slice(5, 5 + n).map(line =>
+	  line.trim().split(/\\s+/).slice(1, 4).map(parseFloat)
+	);
+	const m = parseInt(lines[n + 7]);
+	const e = lines.slice(n + 8, n + 8 + m).map(line =>
+	  line.trim().split(/\\s+/).slice(5, 8).map(x => parseInt(x)-1)  // 0-based indexing
+	);
+
+	// Triangle centers
+	const x = e.map(tri => {
+	  const sum = tri.reduce((acc, idx) => {
+	    return math.add(acc, math.divide(v[idx], 3));
+	  }, [0, 0, 0]);
+	  return sum;
+	});
+postMessage("[... Assembling]");
+	// Helmholtz single layer matrix
+	//let S = math.zeros([m, m]).map(() => math.complex(0));
+	var S = math.matrix().resize([m, m]);
+	for (let i = 0; i < m; i++) {
+	  for (let j = 0; j < m; j++) {
+	    const r = math.norm(math.subtract(x[i], x[j]));
+	    S._data[i][j] = (r!==0) ? math.divide(math.exp(math.complex(0, k*r)),r*(4*pi))
+	                            : math.multiply(math.complex(0, k), 1/(4*pi) );
+	  }
+	}
+
+	// Incident field
+	const f = x.map(p => math.exp( math.complex(0, k * math.dot(p,d))));
+postMessage("[... LUSolving]");
+	// Surface solution using LU decomposition
+	const phi = math.lusolve(S, f.map(val => math.multiply(-1, val)));
+
+postMessage("[... Far field solution]");
+	// Far field solution
+	const r1 = Array.from({length: 360}, (_, i) => [
+	  Math.cos(i*pi/180), Math.sin(i*pi/180), 0]);
+
+	const Sff = r1.map(rvec => x.map(xj =>
+	  math.divide(math.exp( math.complex(0, -k * math.dot(xj,rvec))), 4*pi)));
+
+	const psc = Sff.map(row => math.multiply(row, phi));
+
+	// Return results
+	var s='';
+	for(let i=0; i<psc.length; i++) {
+	  s += i+"\\t"+math.abs(psc[i]._data[0]).toFixed(6)+"\\n";
+	}
+	return(s);
+}
+      `;
 
 pycode=`
 from numpy import pi, sqrt, exp, sin, cos, array, zeros
