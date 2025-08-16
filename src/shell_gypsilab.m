@@ -51,37 +51,40 @@ A21 =  calderon2(sigma2, sigma1, v2, v1, k1, rho1);
 
 [L, U] = lu([A11, A12; A21, A22]);
 
-disp("Solving ..."); ss=[];
-for th=0:th0
-% incident wave and its gradient
-d = [cos(th*pi/180) sin(th*pi/180) 0];
-PW = @(X) exp(1i*k0*X*d');              
-gradxPW{1} = @(X) 1i*k0*d(1).*PW(X);
-gradxPW{2} = @(X) 1i*k0*d(2).*PW(X);
-gradxPW{3} = @(X) 1i*k0*d(3).*PW(X);
-
-% surface solution
-f = integral(sigma1, v1, PW);               % incident wave traces
-g = integral(sigma1, ntimes(v1), gradxPW); 
-z = zeros(N2,1);
-uu =  U \ (L \ [-f; g/rho0; z; z]); 
-% uu = [A11, A12; A21, A22]/rho0 \ [-f; g/rho0; z; z]; 
-
-% far field solution
+% preparation for far field solution
 th1 = (0:359)' * pi/180;
 r1 = [cos(th1),sin(th1),zeros(size(th1))];  % far field circle
 [SL, DL] = potential2(r1, sigma1, v1, k0);
-psc = rho0 * DL * uu(1:N1) + rho0.^2 * SL * uu(N1+1:2*N1); % scattered
+
+disp("Solving ..."); ss=[];
+for th=0:th0
+% incident wave and its gradient
+    d = [cos(th*pi/180) sin(th*pi/180) 0];
+    PW = @(X) exp(1i*k0*X*d');              
+    gradxPW{1} = @(X) 1i*k0*d(1).*PW(X);
+    gradxPW{2} = @(X) 1i*k0*d(2).*PW(X);
+    gradxPW{3} = @(X) 1i*k0*d(3).*PW(X);
+
+% surface solution
+    f = integral(sigma1, v1, PW);               % incident wave traces
+    g = integral(sigma1, ntimes(v1), gradxPW); 
+    z = zeros(N2,1);
+    uu =  U \ (L \ [-f; g/rho0; z; z]); 
+    % uu = [A11, A12; A21, A22]/rho0 \ [-f; g/rho0; z; z]; 
+
+% far field solution
+    psc = rho0 * DL * uu(1:N1) + rho0.^2 * SL * uu(N1+1:2*N1); % scattered
 
 % save, plot and print
-s = [(0:359)' abs(psc)]; mode=['w','a'];
-fid=fopen(oname,mode((th~=0)+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n');fclose(fid);
-%!/usr/local/bin/gnuplot -c ../bin/polar.gp ../out/scat3-gypsilab.txt
-polarplot(th1,max(-63,20*log10(abs(psc)))); rlim([-63 -20]);title(th);drawnow
-i = mod(th+180,360)+1; % backscattering angle index
-ss = [ss; s(i,:)];
-disp([num2str(s(i,1)) ' ' num2str(s(i,2)) ]);
+    s = [(0:359)' abs(psc)]; mode=['w','a'];
+    fid=fopen(oname,mode((th~=0)+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n');fclose(fid);
+    %!/usr/local/bin/gnuplot -c ../bin/polar.gp ../out/scat3-gypsilab.txt
+    polarplot(th1,max(-63,20*log10(abs(psc)))); rlim([-63 -20]);title(th);drawnow
+    i = mod(th+180,360)+1; % backscattering angle index
+    ss = [ss; s(i,:)];
+    disp([num2str(s(i,1)) ' ' num2str(s(i,2)) ]);
 end; 
+
 fid=fopen(strrep(oname,'.txt','-bsl.txt'),'w');fprintf(fid,'%d\t%.6f\n',ss');fclose(fid);
 if size(ss,1)>1
     polarplot(ss(:,1)*pi/180,max(-63,20*log10(ss(:,2)))); rlim([-63 -20]);title('TS');
