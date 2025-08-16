@@ -117,7 +117,15 @@ bash-3.2$
 
 ```
 
+### Browser mm-bem viewer
+
+![](figs/mm-bem1a-example.png)
+![](figs/mm-bem1b-example.png)
+Fig. 8. The screendump from mm-bem web-demo for low resolution mesh of 1.905 cm radius sphere along with theoretical curve for soft sphere in salt water $$c_0=1480$$ m/s at 38kHz.
+
 ### Examples
+
+#### 1. Soft scattering
 
 ![](figs/sphere-1.905-600.png)
 Fig. 1. The sphere mesh with radius of $$a=1.905$$ cm having 600 nodes and 1196 triangular elements used for  verification.
@@ -132,20 +140,28 @@ Fig. 3. The Yellow Fin Tuna swimbladder having 7502 nodes and 15000 triangular e
 ![](figs/YFT_swimbladder_origin-gypsilab-bsl.svg)
 Fig. 4. The scattering pattern for plane wave comming from x-axis and full target strength pattern for (vacuum filled) YFT swimbladder in salt water $$c_0=1480$$ m/s at 38kHz.
 
+#### 2. Fluid scattering
+
 ![](figs/fsphere-1.905-0-38-1480-1024-1540-1045.svg)
-Fig. 5. The scattering from fluid sphere ($$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$) with radius of $$a=1.905$$ cm in salt water ($$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$) at 38kHz. The results from bem calculations along with analytical solution.
+Fig. 5. The scattering from fluid sphere from Fig.1 ($$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$) with radius of $$a=1.905$$ cm in salt water ($$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$) at 38kHz. The results from bem calculations along with analytical solution.
+
+
+![](figs/simplify_MACK_flesh_L20.png)
+Fig. 6. The model of 20cm-length mackerel body.
+
+![](figs/simplify50_MACK_flesh_L20-270.svg)
+![](figs/simplify50_MACK_flesh_L20-bsl.svg)
+Fig. 7. The scattering pattern for dorsal insonification (from top of y-axis, TS value is at 90$$^\circ$$) and xy-plane TS pattern at 38kHz assuming salt water medium ($$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$).
+
+### 3. Shell scattering
 
 ![](figs/spheres-1.905-600-1.0-300.png)
 ![](figs/shell-0-38-1480.svg)
-Fig. 6. The spherical shell mesh with $$a_1=1.905$$ cm (600 nodes) and $$a_2=1.0$$ cm (300 nodes) and its scattering pattern (bem and theory) at 38kHz assuming $$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$, $$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$, $$c_2=340$$ m/s, $$\rho_2=1.29$$ kg/m$$^3$$.
+Fig. 8. The spherical shell mesh with $$a_1=1.905$$ cm (600 nodes) and $$a_2=1.0$$ cm (300 nodes) and its scattering pattern (bem and theory) at 38kHz assuming $$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$, $$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$, $$c_2=340$$ m/s, $$\rho_2=1.29$$ kg/m$$^3$$.
+
+#### 4. Scattering from two contrasting objects inside another one
 
 ![](figs/spheres-1.905-600-126-126.png)
-![](figs/scat3-1.905-600-200-200.svg)
-Fig. 7. The mesh of the sphere with two small spheres having different contrast: $$a_1=1.905$$ cm (600 nodes) and $$a_2=a_3=0.5$$ cm (200 nodes) and its scattering pattern (bem results) at 38kHz assuming $$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$, $$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$, $$c_2=c_3=340$$ m/s, $$\rho_2=\rho_3=1.29$$ kg/m$$^3$$.
+![](figs/scat3-1.905-600-200-200-bempp.svg)
+Fig. 9. The mesh of the sphere with two small spheres having different contrast: $$a_1=1.905$$ cm (600 nodes) and $$a_2=a_3=0.5$$ cm (200 nodes) and its target strength pattern (bem results) at 38kHz assuming $$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$, $$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$, $$c_2=c_3=340$$ m/s, $$\rho_2=\rho_3=1.29$$ kg/m$$^3$$.
 
-![](figs/scat3-1.905-600-200-200-gypsilab360.svg)
-Fig. 8. 360 overlayed scattering patterns for spheres from Fig 7. coming from all directings.
-
-![](figs/mm-bem1a-example.png)
-![](figs/mm-bem1b-example.png)
-Fig. 9. The screendump from mm-bem web-demo for low resolution mesh of 1.905 cm radius sphere along with theoretical curve for soft sphere in salt water $$c_0=1480$$ m/s at 38kHz.

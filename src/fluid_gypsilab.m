@@ -4,13 +4,15 @@
 clear all; close all; clc; tic
 run('../../gypsilab/addpathGypsilab.m')  % Gypsilab path
 
-fname = '../msh/sphere-1.905-600.msh'; 
+%fname = '../msh/sphere-1.905-600.msh'; 
 %fname = '../msh/MACK_flesh_L20.msh';
+fname = '../msh/simplify50_MACK_flesh_L20.msh';
 f0 = 38e3;  th0 = 360;             % wave direction angle
 c0 = 1480;  rho0 = 1024;           % water medium 
 c1 = 1540;  rho1 = 1045;           % fluid medium (target)
-oname = '../out/fluid-gypsilab.txt';
+%oname = '../out/fluid-gypsilab.txt';
 %oname = '../out/MACK_flesh_L20.txt';
+oname = '../out/simplify50_MACK_flesh_L20.txt';
 
 k0 = 2*pi*f0/c0;       % sea water;
 k1 = 2*pi*f0/c1;       % fish body
@@ -60,7 +62,7 @@ for th=0:th0
 
 % save, plot and print
     s = [(0:359)' abs(psc)]; mode=['w','a'];
-    fid=fopen(oname,mode((th~=0)+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n\n');fclose(fid);
+    fid=fopen(oname,mode((th~=0)+1));fprintf(fid,'%d\t%.6f\n',s');fprintf(fid,'\n');fclose(fid);
     %!/usr/local/bin/gnuplot -c ../bin/polar.gp ../out/scat3-gypsilab.txt
     polarplot(th1,max(-63,20*log10(abs(psc)))); rlim([-63 -20]);title(th);drawnow
     i = mod(th+180,360)+1; % backscattering angle index
