@@ -7,7 +7,7 @@ run('../../gypsilab/addpathGypsilab.m')  % Gypsilab path
 % params
 %fname = '../msh/sphere-1.905-600.msh'; 
 fname = '../msh/YFT_swimbladder_origin.msh';
-th0 = 360; ph0 = 360;       % wave direction angles
+Th0=-90:10:90; Ph0=0:10:360;       % wave direction angles
 f0 = 38e3; 
 c0 = 1480;  
 %oname='../out/soft-gypsilab.txt';
@@ -28,7 +28,7 @@ S = 1/(4*pi) .* integral(sigma,sigma,u,Gxy,u,1e-5);   % tol=1e-5
 [L,U] = lu(S);
 
 disp("Solving ..."); ss=[];
-for ph=0:10:ph0
+for ph=Ph0
 
 % preparation for far field solution 
 th1 = pi/180 .* (1:360)';
@@ -39,9 +39,8 @@ xdoty = @(X,Y) X(:,1).*Y(:,1) + X(:,2).*Y(:,2) + X(:,3).*Y(:,3);
 Ginf  = @(X,Y) 1/(4*pi) .* exp(-1i*k0*xdoty(X,Y));
 SL = integral(r1,sigma,Ginf,u,1e-5);
 
-for th=0:10:th0,
+for th=Th0
 % Incident wave
-
     d = (rotph*[cos(th*pi/180) sin(th*pi/180) 0]')';
     PW = @(X) exp(1i*k0*X*d'); 
 
@@ -65,7 +64,7 @@ end;
 end;
 
 fid2=fopen(strrep(oname,'.txt','-bsl.txt'),'w');
-fprintf(fid2,['# soft_gypsilab\n']);
+fprintf(fid2,sprintf('# soft_gypsilab # %dx%d\n',length(Th0),length(Ph0)));
 fprintf(fid2,'%d\t%d\t%.6f\n',ss');
 fclose(fid2);
 if size(ss,1)>1
