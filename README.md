@@ -1,7 +1,7 @@
 ## Minimalistic bem code for plane wave scattering from underwater targets 
 ### MM 8.8.2025
 
-mm-bem contains collection of several source codes for calculating scattering pattern obtained when plane wave scatters from soft targets. It uses boundary element method with piecewise constant discontinuous finite elements in 3D (P0).
+mm-bem contains collection of several source codes for calculating scattering pattern obtained when plane wave scatters from underwater targets. It uses boundary element method with piecewise constant discontinuous finite elements in 3D (P0).
 
 Calling convension depends on the code language but usually it uses four parameters:
 
