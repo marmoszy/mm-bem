@@ -165,3 +165,9 @@ Fig. 8. The spherical shell mesh with $$a_1=1.905$$ cm (600 nodes) and $$a_2=1.0
 ![](figs/scat3-1.905-600-200-200-bempp.svg)
 Fig. 9. The mesh of the sphere with two small spheres having different contrast: $$a_1=1.905$$ cm (600 nodes) and $$a_2=a_3=0.5$$ cm (200 nodes) and its target strength pattern (bem results) at 38kHz assuming $$c_0=1480$$ m/s, $$\rho_0=1024$$ kg/m$$^3$$, $$c_1=1540$$ m/s, $$\rho_1=1045$$ kg/m$$^3$$, $$c_2=c_3=340$$ m/s, $$\rho_2=\rho_3=1.29$$ kg/m$$^3$$.
 
+#### 5. Note
+In [nb](nb) subdirectory there are also Python codes in the form of Jupyter notebooks 
+
+MM 31.10.2026
+
+
