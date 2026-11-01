@@ -1,4 +1,4 @@
-## Jupyter notebooks with python mm-bem codes using bempp library
+## Jupyter notebooks with python mm-bem codes
 
 
 The notebooks show the folowing cases of acoustic scattering of plane wave in water:
