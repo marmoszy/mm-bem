@@ -33,20 +33,20 @@ The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 verti
 Examples:
 
 1. Scattering from soft target
-![](soft_bempp_1.svg)
-![](soft_bempp_2.svg)
+   
+![](soft_bempp_1.svg)![](soft_bempp_2.svg)
 
 2. Scattering from fluid target
-![](fluid_bempp_1.svg)
-![](fluid_bempp_2.svg)
 
-2. Scattering from fluid with inclusion
-![](shell_bempp_1.svg)
-![](shell_bempp_2.svg)
+![](fluid_bempp_1.svg)![](fluid_bempp_2.svg)
 
-2. Scattering from fluid with two inclusions
-![](scat3_bempp_1_0.svg)
-![](scat3_bempp_2_0.svg)
+3. Scattering from fluid with inclusion
+
+![](shell_bempp_1.svg)![](shell_bempp_2.svg)
+
+4. Scattering from fluid with two inclusions
+
+![](scat3_bempp_1_0.svg)![](scat3_bempp_2_0.svg)
 
 Note:
 All mesh datafiles are in [msh](../msh/) directory (datapath = "../msh/" variable)
