@@ -15,6 +15,12 @@ Each example contains:
 - scattering function polar plot in dB
 - two-column scattering function (degree, scattering pressure)
 
+Moreover it contains calculations of yellowfin tuna swimbladder from dorsal aspect using several technologies:
+- scipy lu_solver - [yft\_scipy.ipynb](yft_scipy.ipynb)
+- bempp gmres solver - [yft\_bempp.ipynb](yft_bempp.ipynb)
+- pytorch solver - [yft\_pytorch.ipynb](yft_pytorch.ipynb)
+- taichi + scipy lu_solver - [yft\_taichi.ipynb](yft_taichi.ipynb)
+
 Examples:
 
 1. Scattering from soft target
