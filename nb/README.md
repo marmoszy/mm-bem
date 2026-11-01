@@ -24,10 +24,10 @@ The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 verti
 
 |YFT_swimbladder_origin.msh| time |
 |:---|:---:|
-|1.scipy|2m 41.5s|
-|2.bempp|45.5s|
-|3.pytorch|28.9s|
-|4.taichi|7.2s|
+|1. scipy|2m 41.5s|
+|2. bempp|45.5s|
+|3. pytorch|28.9s|
+|4. taichi|7.2s|
 
 
 Examples:
