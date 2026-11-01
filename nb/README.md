@@ -15,11 +15,20 @@ Each example contains:
 - scattering function polar plot in dB
 - two-column scattering function (degree, scattering pressure)
 
-Moreover it contains calculations of yellowfin tuna swimbladder from dorsal aspect using several technologies:
+Moreover it contains calculations of the scattering function from yellowfin tuna swimbladder in dorsal aspect using several technologies:
 - scipy lu_solver - [yft\_scipy.ipynb](yft_scipy.ipynb)
 - bempp gmres solver - [yft\_bempp.ipynb](yft_bempp.ipynb)
 - pytorch solver - [yft\_pytorch.ipynb](yft_pytorch.ipynb)
 - taichi + scipy lu_solver - [yft\_taichi.ipynb](yft_taichi.ipynb)
+The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 vertices nad 15000 triangles. The calculation times on MacBookPro M1 with Sequoia 15.7.7 are as follows:
+
+|YFT_swimbladder_origin.msh| time |
+|:---|:---:|
+|1.scipy|2m 41.5s|
+|2.bempp|45.5s|
+|3.pytorch|28.9s|
+|4.taichi|7.2s|
+
 
 Examples:
 
@@ -40,6 +49,6 @@ Examples:
 ![](scat3_bempp_2_0.svg)
 
 Note:
-All mesh datafiles are in [msh](../msh/) directory
+All mesh datafiles are in [msh](../msh/) directory (datapath = "../msh/" variable)
 
 MM 31.10.2026
