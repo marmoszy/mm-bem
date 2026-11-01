@@ -24,7 +24,7 @@ Moreover it contains calculations of the scattering function from yellowfin tuna
 The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 vertices nad 15000 triangles. The calculation times on MacBookPro M1 with Sequoia 15.7.7 are as follows:
 
 |YFT_swimbladder_origin.msh<br/>7502x15000| time |
-|:---:|:---:|
+|:---|:---:|
 |1. scipy|2m 41.5s|
 |2. bempp|45.5s|
 |3. pytorch|28.9s|
