@@ -30,6 +30,10 @@ The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 verti
 |3. pytorch|28.9s|
 |4. taichi|7.2s|
 
+![](yft_taichi_1.svg)![](yft_taichi_2.svg)
+
+* Yellowfin tuna swimbladder model with calculated scattering pattern for dorsal aspect*
+
 Examples:
 
 1. Scattering from soft target
