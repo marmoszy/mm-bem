@@ -32,7 +32,7 @@ The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 verti
 
 ![](yft_taichi_1.svg)![](yft_taichi_2.svg)
 
-* Yellowfin tuna swimbladder model with calculated scattering pattern for dorsal aspect*
+*Fig1. Yellowfin tuna swimbladder model (top) with calculated scattering pattern (bottom) for plane wave at 38kHz coming from dorsal aspect $\theta_{BS}$=90$\degree$*
 
 Examples:
 
