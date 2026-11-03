@@ -1,4 +1,4 @@
-## Minimalistic bem code for plane wave scattering from underwater targets with [web-demo](https://marmoszy.gethub.io/mm-bem/)
+## Minimalistic bem code for plane wave scattering from underwater targets with [web-demo](https://marmoszy.github.io/mm-bem/)
 ### MM 8.8.2025
 
 mm-bem contains collection of several source codes for calculating scattering pattern obtained when plane wave scatters from underwater targets. It uses boundary element method with piecewise constant discontinuous finite elements in 3D (P0).
