@@ -38,14 +38,25 @@ def plot_mesh(v,e,fname,fname2):
 def plot_lbs(psc,lbs,fname,fname2):
     import matplotlib.pyplot as plt
     from numpy import pi, log10, linspace
-    angles = linspace(0, 2 * pi, 360, endpoint=False)
     vmin, vmax = -60, -20
     fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
     colors = ["red","green","blue","orange","cyan","magenta"]
-    for i in range(len(psc)):
-        values_db = 20 * log10([abs(p) for p in psc[i]])
-        ax.plot(angles, values_db, color=colors[i%len(colors)], label=r"%gkHz/%g$\degree$/%.2fdB"%(lbs[i][0]/1e3,lbs[i][1],20*log10(abs(lbs[i][2]))))
-        ax.scatter(lbs[i][1]*pi/180, 20*log10(abs(lbs[i][2])), s=50, edgecolor='none', facecolor=colors[i%len(colors)], alpha=1, zorder=3)
+    if len(psc)<60:
+        angles = linspace(0, 2 * pi, 360, endpoint=False)
+        for i in range(len(psc)):
+            values_db = 20 * log10([abs(p) for p in psc[i]])
+            ax.plot(angles, values_db, color=colors[i%len(colors)], label=r"%gkHz/%g$\degree$/%.2fdB"%(lbs[i][0]/1e3,lbs[i][1],20*log10(abs(lbs[i][2]))))
+            ax.scatter(lbs[i][1]*pi/180, 20*log10(abs(lbs[i][2])), s=50, edgecolor='none', facecolor=colors[i%len(colors)], alpha=1, zorder=3)
+    else:
+        grouped = {}
+        for l in lbs:
+            if l[0] not in grouped: grouped[l[0]] = []  
+            grouped[l[0]].append(l)
+        for i, (f0, lbs1) in enumerate(grouped.items()):
+            angles = [r[1]*pi/180 for r in lbs1]
+            values_db = 20 * log10([abs(r[2]) for r in lbs1])
+            ax.plot(angles, values_db, color=colors[1+i], label=r"%gkHz"%(lbs1[-1][0]/1e3))
+        ax.set_title(r"%s TS($\theta$)"%(fname), va='bottom')
     ax.legend(loc='upper left', bbox_to_anchor=(1.02, 1))
     ax.set_ylim(vmin, vmax)
     ax.set_rticks(linspace(vmin, vmax, 5))
