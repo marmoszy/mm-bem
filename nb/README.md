@@ -21,6 +21,14 @@ Moreover it contains calculations of the target strength angular pattern from ye
 - pytorch solver - [yft\_pytorch.ipynb](yft_pytorch.ipynb)
 - taichi + scipy lu_solver - [yft\_taichi.ipynb](yft_taichi.ipynb)
 
+![](out/yft_taichi_1.svg)
+
+Fig. 1. Yellowfin tuna swimbladder model 
+
+![](out/yft_taichi_3.svg)
+
+Fig. 2. Yellowfin tuna swimbladder target strength angular pattern at 38kHz
+
 <!--
 *Tab. 1. The calculation times of scattering pattern for yellowfin tuna swimbladder model (fname = "YFT_swimbladder_origin.msh" ) containing 7502 vertices nad 15000 triangles (using vertices DOF=7502) on MacBookPro M1 with Sequoia 15.7.7.*
 
@@ -40,14 +48,6 @@ Moreover it contains calculations of the target strength angular pattern from ye
 |bempp (gmres)|3m 20.8s|
 |pytorch|20.0s|
 |taichi|12.5s|
-
-![](out/yft_taichi_1.svg)
-
-Fig. 1. Yellowfin tuna swimbladder model 
-
-![](out/yft_taichi_3.svg)
-
-Fig. 2. Yellowfin tuna swimbladder target strength angular pattern at 38kHz
 
 Examples:
 
