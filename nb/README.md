@@ -42,19 +42,19 @@ Examples:
 
 1. Scattering from soft target
    
-![](soft_bempp_1.svg)![](soft_bempp_2.svg)
+![](out/soft_bempp_1.svg)![](out/soft_bempp_2.svg)
 
 2. Scattering from fluid target
 
-![](fluid_bempp_1.svg)![](fluid_bempp_2.svg)
+![](out/fluid_bempp_1.svg)![](out/fluid_bempp_2.svg)
 
 3. Scattering from fluid with inclusion
 
-![](shell_bempp_1.svg)![](shell_bempp_2.svg)
+![](out/shell_bempp_1.svg)![](out/shell_bempp_2.svg)
 
 4. Scattering from fluid with two inclusions
 
-![](scat3_bempp_1_0.svg)![](scat3_bempp_2_0.svg)
+![](out/scat3_bempp_1_0.svg)![](out/scat3_bempp_2_0.svg)
 
 Note:
 All mesh datafiles are in [msh](../msh/) directory (datapath = "../msh/" variable)
