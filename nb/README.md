@@ -15,14 +15,14 @@ Each example contains:
 - scattering function polar plot in dB
 - two-column scattering function (degree, scattering pressure)
 
-Moreover it contains calculations of the scattering function from yellowfin tuna swimbladder in dorsal aspect using several technologies:
+Moreover it contains calculations of the target strength angular pattern from yellowfin tuna swimbladder model using several technologies:
 - scipy lu_solver - [yft\_scipy.ipynb](yft_scipy.ipynb)
 - bempp gmres solver - [yft\_bempp.ipynb](yft_bempp.ipynb)
 - pytorch solver - [yft\_pytorch.ipynb](yft_pytorch.ipynb)
 - taichi + scipy lu_solver - [yft\_taichi.ipynb](yft_taichi.ipynb)
 
 <!--
-The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 vertices nad 15000 triangles. The calculation times using vertices (DOF=7502) on MacBookPro M1 with Sequoia 15.7.7 are as follows:
+*Tab. 1. The calculation times of scattering pattern for yellowfin tuna swimbladder model (fname = "YFT_swimbladder_origin.msh" ) containing 7502 vertices nad 15000 triangles (using vertices DOF=7502) on MacBookPro M1 with Sequoia 15.7.7.*
 
 |<div align="center">YFT_swimbladder_origin.msh<br/>7502x15000</div>| DOF=7502 |
 |:---|:---:|
@@ -32,7 +32,7 @@ The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 verti
 |4. taichi|7.2s|
 -->
 
-The swimbladder mesh (fname = "simplify10_YFT_swimbladder_origin.msh" ) contains 752 vertices nad 1500 triangles. The calculation times using triangles (DOF=1500) on MacBookPro M1 with Sequoia 15.7.7 are as follows:
+*Tab. 1. The calculation times of target strength angular pattern for yellowfin tuna reduced model (fname = "simplify10_YFT_swimbladder_origin.msh" ) containing 752 vertices nad 1500 triangles (using triangles centers DOF=1500) on MacBookPro M1 with Sequoia 15.7.7.*
 
 |<div align="center">simplify10\_YFT\_swimbladder_origin.msh<br/>752x1500</div>|DOF=1500|
 |:---|:---:|
