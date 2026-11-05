@@ -21,6 +21,7 @@ Moreover it contains calculations of the scattering function from yellowfin tuna
 - pytorch solver - [yft\_pytorch.ipynb](yft_pytorch.ipynb)
 - taichi + scipy lu_solver - [yft\_taichi.ipynb](yft_taichi.ipynb)
 
+<!--
 The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 vertices nad 15000 triangles. The calculation times using vertices (DOF=7502) on MacBookPro M1 with Sequoia 15.7.7 are as follows:
 
 |<div align="center">YFT_swimbladder_origin.msh<br/>7502x15000</div>| DOF=7502 |
@@ -29,6 +30,16 @@ The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 verti
 |2. bempp|45.5s|
 |3. pytorch|28.9s|
 |4. taichi|7.2s|
+-->
+
+The swimbladder mesh (fname = "simplify10_YFT_swimbladder_origin.msh" ) contains 752 vertices nad 1500 triangles. The calculation times using triangles (DOF=1500) on MacBookPro M1 with Sequoia 15.7.7 are as follows:
+
+|<div align="center">simplify10\_YFT\_swimbladder_origin.msh<br/>752x1500</div>|DOF=1500|
+|:---|:---:|
+|scipy|4m 2.4s|
+|bempp (gmres)|3m 20.8s|
+|pytorch|20.0s|
+|taichi|12.5s|
 
 ![](out/yft_taichi_1.svg)
 
