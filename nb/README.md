@@ -30,10 +30,13 @@ The swimbladder mesh (fname = "YFT_swimbladder_origin.msh" ) contains 7502 verti
 |3. pytorch|28.9s|
 |4. taichi|7.2s|
 
-![](yft_taichi_1.svg)![](yft_taichi_2.svg)
+![](out/yft_taichi_1.svg)
 
-Fig1. Yellowfin tuna swimbladder model (top) with calculated scattering pattern (bottom) for plane wave at 38kHz coming from dorsal aspect $\theta_{BS}=90^{\circ}$
+Fig. 1. Yellowfin tuna swimbladder model 
 
+![](out/yft_taichi_3.svg)
+
+Fig. 2. Yellowfin tuna swimbladder target strength angular pattern at 38kHz
 
 Examples:
 
