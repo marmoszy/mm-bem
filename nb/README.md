@@ -40,7 +40,7 @@ Fig. 2. Yellowfin tuna swimbladder target strength angular pattern at 38kHz
 |4. taichi|7.2s|
 -->
 
-*Tab. 1. The calculation times of target strength angular pattern for yellowfin tuna reduced model (fname = "simplify10_YFT_swimbladder_origin.msh" ) containing 752 vertices nad 1500 triangles (using triangles centers DOF=1500) on MacBookPro M1 with Sequoia 15.7.7.*
+*Tab. 1. The calculation times of the target strength angular pattern for a yellowfin tuna reduced model (fname = "simplify10_YFT_swimbladder_origin.msh") containing 752 vertices nad 1500 triangles (using triangles centers DOF=1500) on MacBookPro M1 with Sequoia 15.7.7.*
 
 |<div align="center">simplify10\_YFT\_swimbladder_origin.msh<br/>752x1500</div>|DOF=1500|
 |:---|:---:|
@@ -49,7 +49,7 @@ Fig. 2. Yellowfin tuna swimbladder target strength angular pattern at 38kHz
 |pytorch|20.0s|
 |taichi|12.5s|
 
-Examples:
+Scattering function examples:
 
 1. Scattering from soft target
    
