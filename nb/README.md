@@ -47,7 +47,7 @@ Fig. 2. Yellowfin tuna swimbladder target strength angular pattern at 38kHz
 |scipy|11.3s|
 |bempp (gmres)|3m 20.8s|
 |pytorch|20.0s|
-|taichi|12.5s|
+|taichi|3.2s|
 
 Scattering function examples:
 
