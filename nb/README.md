@@ -44,7 +44,7 @@ Fig. 2. Yellowfin tuna swimbladder target strength angular pattern at 38kHz
 
 |<div align="center">simplify10\_YFT\_swimbladder_origin.msh<br/>752x1500</div>|DOF=1500|
 |:---|:---:|
-|scipy|3m 56.0s|
+|scipy|11.3s|
 |bempp (gmres)|3m 20.8s|
 |pytorch|20.0s|
 |taichi|12.5s|
