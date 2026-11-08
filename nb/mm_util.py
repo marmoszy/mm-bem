@@ -15,13 +15,17 @@ def plot_mesh(v, e, fname, id, path):
     x_min, x_max = v_arr[:, 0].min(), v_arr[:, 0].max()
     y_min, y_max = v_arr[:, 1].min(), v_arr[:, 1].max()
     z_min, z_max = v_arr[:, 2].min(), v_arr[:, 2].max()
-    ax.set_xlim(x_min, x_max)
-    ax.set_ylim(y_min, y_max)
-    ax.set_zlim(z_min, z_max)
     x_range = x_max - x_min
     y_range = y_max - y_min
     z_range = z_max - z_min
-    ax.set_box_aspect((x_range, y_range, z_range))
+    max_range = max(x_range, y_range, z_range)
+    x_mid = (x_max + x_min) / 2
+    y_mid = (y_max + y_min) / 2
+    z_mid = (z_max + z_min) / 2
+    ax.set_xlim(x_mid - max_range / 2, x_mid + max_range / 2)
+    ax.set_ylim(y_mid - max_range / 2, y_mid + max_range / 2)
+    ax.set_zlim(z_mid - max_range / 2, z_mid + max_range / 2)
+    ax.set_box_aspect((1, 1, 1))
     ax.view_init(elev=10, azim=20, vertical_axis='y')
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
@@ -92,3 +96,52 @@ plot_mesh(v, e, fname, "yft_taichi_1.svg")
 plot_lbs(psc, lbs, fname, "yft_taichi_2.svg")
 print_txt(fname, n, m, psc, lbs, "taichi", "yft_taichi_3.txt")
 """
+
+# --- tsv reader
+def tsv_read(fname):
+    with open(fname) as fp: lines = fp.readlines()
+    return [[float(n) for n in l.split()] for l in lines if not l.strip().startswith('#')]
+def every(a, n):
+    return [e for i, e in enumerate(a) if (i + n - 1) % n == n - 1]
+def mfrustum(xyzwh, N = 24, W = 1):
+    import math
+    xyzwh = [list(row) for row in zip(*xyzwh)] # transpose
+    vx, fx = [], []
+    n, nW = 0, W or 1
+    w = every(xyzwh[3], nW)
+    h = every(xyzwh[4], nW)
+    x = every(xyzwh[0], nW)
+    y = every(xyzwh[1], nW)
+    z = every(xyzwh[2], nW)
+    for i in range(len(xyzwh[3])):
+        w[i], h[i] = w[i]/2, h[i]/2
+    for j in range(len(w)):
+        if w[j] == 0: w[j] = 0.0001
+        if h[j] == 0: h[j] = 0.0001
+        if j == 0: continue
+        mode = 0
+        if j == 1: mode |= 1
+        if j == len(w) - 1: mode |= 2
+        for i in range(N):
+            for k in range(j - 1, j + 1):  # k takes values: j-1, j
+                a = 0
+                b = w[k] * math.sin(2 * math.pi * i / N)
+                c = h[k] * math.cos(2 * math.pi * i / N)
+                vx.append([a + x[k], b + y[k], c + z[k]])
+        vx.append([x[j - 1], y[j - 1], z[j - 1]])
+        vx.append([x[j], y[j], z[j]])
+        for i in range(N):
+            fx.append([n + 2 * i, n + 2 * i + 1, n + (2 * i + 2) % (2 * N)])
+            fx.append([n + (2 * i + 2) % (2 * N), n + 2 * i + 1, n + (2 * i + 3) % (2 * N)])
+            if mode & 1:
+                fx.append([n + 2 * i, n + (2 * i + 2) % (2 * N), n + 2 * N])
+            if mode & 2:
+                fx.append([n + 2 * i + 1, n + 2 * N + 1, n + (2 * i + 3) % (2 * N)])                
+        n += 2 * N + 2
+    return (vx, fx)
+# --- tsv generators ---
+def osphere(a, b=None, c=None, n=7):
+    from math import sin, cos, pi
+    if b == None: b = a
+    if c == None: c = b
+    return [[-a*cos(i*pi/(n-1)),0,0,2*b*sin(i*pi/(n-1)),2*c*sin(i*pi/(n-1))] for i in range(n)]
