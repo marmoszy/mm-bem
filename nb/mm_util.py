@@ -1,5 +1,5 @@
 # --- plot mesh
-def plot_mesh(v,e,fname,fname2):
+def plot_mesh(v, e, fname, id, path):
     import matplotlib.pyplot as plt
     from mpl_toolkits.mplot3d.art3d import Poly3DCollection
     from numpy import array
@@ -31,17 +31,17 @@ def plot_mesh(v,e,fname,fname2):
     ax.xaxis.set_major_locator(MaxNLocator(nbins=4))
     ax.yaxis.set_major_locator(MaxNLocator(nbins=4))
     ax.zaxis.set_major_locator(MaxNLocator(nbins=4))
-    plt.savefig(fname2, format="svg", bbox_inches="tight")
+    plt.savefig(path+fname[:-4]+"_"+id+".svg", format="svg", bbox_inches="tight")
     plt.show()
 
 # --- plot solution
-def plot_lbs(psc,lbs,fname,fname2):
+def plot_lbs(psc, lbs, fname, id, path):
     import matplotlib.pyplot as plt
     from numpy import pi, log10, linspace
     vmin, vmax = -60, -20
     fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
     colors = ["red","green","blue","orange","cyan","magenta"]
-    if len(psc)<60:
+    if len(psc)<10:
         angles = linspace(0, 2 * pi, 360, endpoint=False)
         for i in range(len(psc)):
             values_db = 20 * log10([abs(p) for p in psc[i]])
@@ -69,18 +69,21 @@ def plot_lbs(psc,lbs,fname,fname2):
             fontsize=11,color='black',transform=ax.transAxes)
         ax.text(0.775, -0.065, "TS=%.2f dB"%(20*log10(abs(lbs[-1][2]))),
             fontsize=11,color='black',transform=ax.transAxes)
-    plt.savefig(fname2, format="svg", bbox_inches="tight")
+    plt.savefig(path+fname[:-4]+"_"+id+".svg", format="svg", bbox_inches="tight")
     plt.show()
 
 # --- print
-def print_txt(fname,n,m,psc,lbs,id,fname2):
-    s = "# mm-bem-%s: %s (%dx%d)"%(id,fname,n,m)
+def print_txt(fname, n, m, psc, lbs, id, path):
+    s = "# mm-bem-%s: %s (%dx%d)"%(id.split("_")[0],fname,n,m)
     for j in range(len(psc)):
         f0, th, lbs0, c0 = lbs[j][0], lbs[j][1], lbs[j][2], lbs[j][3]
-        s += "\n# th0=%g ph0=0 f0=%g c0=%g lbs=%g (%g,%g)\n"%(th,f0,c0,abs(lbs0),lbs0.real,lbs0.imag)
-        s += "\n".join(["%d\t%g"%(i,abs(psc[j][i])) for i in range(len(psc[j]))])
+        if len(psc)<10:
+            s += "\n# th0=%g ph0=0 f0=%g c0=%g lbs=%g (%g,%g)\n"%(th,f0,c0,abs(lbs0),lbs0.real,lbs0.imag)
+            s += "\n".join(["%d\t%g"%(i,abs(psc[j][i])) for i in range(len(psc[j]))])
+        else:
+            s += "\n%g %g %g %g %g"%(th,f0,lbs0.real,lbs0.imag,abs(lbs0))
     print(s)
-    with open(fname2, "w") as fp: print(s,file=fp)
+    with open(path+fname[:-4]+"_"+id+".txt", "w") as fp: print(s,file=fp)
 
 # --- demo
 """
