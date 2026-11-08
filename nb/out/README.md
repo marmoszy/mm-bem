@@ -1,6 +1,7 @@
 ### Results of jupyter notebooks processing:
 
-![yft_taichi_1.svg](yft_taichi_1.svg)
-![yft_taichi_2.svg](yft_taichi_2.svg)
+![simplify10_YFT_swimbladder_origin_scipy_1.svg](simplify10_YFT_swimbladder_origin_scipy_1.svg)
+![simplify10_YFT_swimbladder_origin_scipy_2.svg](simplify10_YFT_swimbladder_origin_scipy_2.svg)
+![simplify10_YFT_swimbladder_origin_scipy_3.svg](simplify10_YFT_swimbladder_origin_scipy_3.svg)
 
-[yft_taichi_3.txt](yft_taichi_3.txt)
+[simplify10_YFT_swimbladder_origin_scipy_4.txt](simplify10_YFT_swimbladder_origin_scipy_4.txt)
