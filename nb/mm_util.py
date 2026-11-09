@@ -81,8 +81,8 @@ def plot_lbs(psc, lbs, fname, id, path):
     plt.show()
 
 # --- print lbs ---
-def print_lbs(psc, lbs, fname, n, m, id, path):
-    s = "# mm-bem-%s: %s (%dx%d)"%(id.split("_")[0],fname,n,m)
+def print_lbs(psc, lbs, fname, n, m, id, path, tm=None):
+    s = "# mm-bem-%s %s: %s (%dx%d)"%(id.split("_")[0],tm!=None and "(%.2fs)"%tm or "",fname,n,m)
     for j in range(len(psc)):
         f0, th, lbs0, c0 = lbs[j][0], lbs[j][1], lbs[j][2], lbs[j][3]
         if len(psc)<10:
