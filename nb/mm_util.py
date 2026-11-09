@@ -1,4 +1,8 @@
-# --- plot mesh
+# utility functions for python mm-bem codes
+# plot_msh, plot_lbs, print_lbs, tsv_read, mfrustum, osphere
+# MM 9.11.2026
+
+# --- plot mesh ---
 def plot_mesh(v, e, fname, id, path):
     import matplotlib.pyplot as plt
     from mpl_toolkits.mplot3d.art3d import Poly3DCollection
@@ -38,7 +42,7 @@ def plot_mesh(v, e, fname, id, path):
     plt.savefig(path+fname[:-4]+"_"+id+".svg", format="svg", bbox_inches="tight")
     plt.show()
 
-# --- plot solution
+# --- plot lbs ---
 def plot_lbs(psc, lbs, fname, id, path):
     import matplotlib.pyplot as plt
     from numpy import pi, log10, linspace
@@ -76,8 +80,8 @@ def plot_lbs(psc, lbs, fname, id, path):
     plt.savefig(path+fname[:-4]+"_"+id+".svg", format="svg", bbox_inches="tight")
     plt.show()
 
-# --- print
-def print_txt(fname, n, m, psc, lbs, id, path):
+# --- print lbs ---
+def print_lbs(psc, lbs, fname, n, m, id, path):
     s = "# mm-bem-%s: %s (%dx%d)"%(id.split("_")[0],fname,n,m)
     for j in range(len(psc)):
         f0, th, lbs0, c0 = lbs[j][0], lbs[j][1], lbs[j][2], lbs[j][3]
@@ -89,22 +93,16 @@ def print_txt(fname, n, m, psc, lbs, id, path):
     print(s)
     with open(path+fname[:-4]+"_"+id+".txt", "w") as fp: print(s,file=fp)
 
-# --- demo
-"""
-from mm_plots import plot_mesh, plot_lbs, print_txt
-plot_mesh(v, e, fname, "yft_taichi_1.svg")
-plot_lbs(psc, lbs, fname, "yft_taichi_2.svg")
-print_txt(fname, n, m, psc, lbs, "taichi", "yft_taichi_3.txt")
-"""
-
-# --- tsv reader
+# --- tsv reader ---
 def tsv_read(fname):
     with open(fname) as fp: lines = fp.readlines()
     return [[float(n) for n in l.split()] for l in lines if not l.strip().startswith('#')]
+
+# --- outline conversion ---
 def every(a, n):
     return [e for i, e in enumerate(a) if (i + n - 1) % n == n - 1]
 def mfrustum(xyzwh, N = 24, W = 1):
-    import math
+    from math import sin, cos, pi
     xyzwh = [list(row) for row in zip(*xyzwh)] # transpose
     vx, fx = [], []
     n, nW = 0, W or 1
@@ -123,23 +121,22 @@ def mfrustum(xyzwh, N = 24, W = 1):
         if j == 1: mode |= 1
         if j == len(w) - 1: mode |= 2
         for i in range(N):
-            for k in range(j - 1, j + 1):  # k takes values: j-1, j
-                a = 0
-                b = w[k] * math.sin(2 * math.pi * i / N)
-                c = h[k] * math.cos(2 * math.pi * i / N)
-                vx.append([a + x[k], b + y[k], c + z[k]])
-        vx.append([x[j - 1], y[j - 1], z[j - 1]])
+            for k in range(j-1, j+1):  # k takes values: j-1, j
+                a, b, c = 0, w[k]*sin(2*pi*i/N), h[k]*cos(2*pi*i/N)
+                vx.append([a+x[k], b+y[k], c+z[k]])
+        vx.append([x[j-1], y[j-1], z[j-1]])
         vx.append([x[j], y[j], z[j]])
         for i in range(N):
-            fx.append([n + 2 * i, n + 2 * i + 1, n + (2 * i + 2) % (2 * N)])
-            fx.append([n + (2 * i + 2) % (2 * N), n + 2 * i + 1, n + (2 * i + 3) % (2 * N)])
+            fx.append([n+2*i, n+2*i+1, n+(2*i+2)%(2*N)])
+            fx.append([n+(2*i+2)%(2*N), n+2*i+1, n+(2*i+3)%(2*N)])
             if mode & 1:
-                fx.append([n + 2 * i, n + (2 * i + 2) % (2 * N), n + 2 * N])
+                fx.append([n+2*i, n+(2*i+2)%(2*N), n+2*N])
             if mode & 2:
-                fx.append([n + 2 * i + 1, n + 2 * N + 1, n + (2 * i + 3) % (2 * N)])                
-        n += 2 * N + 2
+                fx.append([n+2*i+1, n+2*N+1, n+(2*i+3)%(2*N)])                
+        n += 2*N+2
     return (vx, fx)
-# --- tsv generators ---
+
+# --- outline sphere/ellipsoid generator ---
 def osphere(a, b=None, c=None, n=7):
     from math import sin, cos, pi
     if b == None: b = a
