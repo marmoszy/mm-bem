@@ -111,6 +111,8 @@ def mfrustum(xyzwh, N = 24, W = 1):
     x = every(xyzwh[0], nW)
     y = every(xyzwh[1], nW)
     z = every(xyzwh[2], nW)
+    e1 = every(xyzwh[5], nW) if len(xyzwh[5]) > 0 else [1] * len(w)
+    e2 = every(xyzwh[6], nW) if len(xyzwh[6]) > 0 else [1] * len(w)
     for i in range(len(xyzwh[3])):
         w[i], h[i] = w[i]/2, h[i]/2
     for j in range(len(w)):
@@ -121,8 +123,11 @@ def mfrustum(xyzwh, N = 24, W = 1):
         if j == 1: mode |= 1
         if j == len(w) - 1: mode |= 2
         for i in range(N):
+            sa, ca = math.sin(2*pi*i/N), math.cos(2*pi*i/N)
             for k in range(j-1, j+1):  # k takes values: j-1, j
-                a, b, c = 0, w[k]*sin(2*pi*i/N), h[k]*cos(2*pi*i/N)
+                ss = math.copysign(1, sa) * (abs(sa) ** e1[k])
+                sc = math.copysign(1, ca) * (abs(ca) ** e1[k])
+                a, b, c = 0, w[k]*ss, h[k]*sc
                 vx.append([a+x[k], b+y[k], c+z[k]])
         vx.append([x[j-1], y[j-1], z[j-1]])
         vx.append([x[j], y[j], z[j]])
@@ -137,8 +142,51 @@ def mfrustum(xyzwh, N = 24, W = 1):
     return (vx, fx)
 
 # --- outline sphere/ellipsoid generator ---
+"""
 def osphere(a, b=None, c=None, n=7):
     from math import sin, cos, pi
     if b == None: b = a
     if c == None: c = b
     return [[-a*cos(i*pi/(n-1)),0,0,2*b*sin(i*pi/(n-1)),2*c*sin(i*pi/(n-1))] for i in range(n)]
+"""
+import math
+def get_dynamic_param(param, i, total_steps, default_value=1):
+    if not isinstance(param, (list, tuple)): return param
+    if len(param) == 0: return default_value
+    if len(param) == 1: return param[0]
+    progress = 1.0 - (i / (total_steps - 1))
+    exact_index = progress * (len(param) - 1)
+    index_low = math.floor(exact_index)
+    index_high = min(index_low + 1, len(param) - 1)
+    weight = exact_index - index_low
+    return param[index_low] * (1-weight) + param[index_high] * weight
+def osphere(r, n=14, alpha=0, beta=0, e1=1, e2=None):
+    if isinstance(r, (list, tuple)):
+        a, b, c = r[0]
+        b = r[1] if len(r) > 1 else a
+        c = r[2] if len(r) > 2 else b
+    else:
+        a = b = c = r
+    if n < 3: n = 3
+    if e2 is None: e2 = e1
+    x = []
+    for i in range(n):
+        rad_a = (get_dynamic_param(alpha, i, n, 0) * math.pi) / 180
+        rad_b = (get_dynamic_param(beta, i, n, 0) * math.pi) / 180
+        cur_e1 = get_dynamic_param(e1, i, n, 1)
+        cur_e2 = get_dynamic_param(e2, i, n, 1)
+        base_x = -a * math.cos(i * math.pi / (n - 1))
+        row = [
+            base_x * math.cos(rad_a) * math.cos(rad_b),
+            base_x * math.sin(rad_b),
+            base_x * math.sin(rad_a),
+            2 * b * math.sin(i * math.pi / (n - 1)),
+            2 * c * math.sin(i * math.pi / (n - 1)),
+            cur_e1,
+            cur_e2
+        ]
+        x.append(row)
+    return x
+    #s = "".join(["\t".join(map(str, row)) + "\n" for row in x])
+    #return s
+
